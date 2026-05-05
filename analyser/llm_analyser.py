@@ -65,6 +65,20 @@ def _parse_response(text: str) -> dict:
     }
 
 
+def _retry_wait(err: str) -> int:
+    """Return seconds to wait before retrying, based on error type."""
+    # New SDK JSON format: 'retryDelay': '11s'
+    m = re.search(r"retryDelay['\"]:\s*['\"](\d+)s", err)
+    if m:
+        return int(m.group(1)) + 2
+    # Old protobuf format: retry_delay { seconds: 22 }
+    m = re.search(r"retry_delay\s*\{\s*seconds:\s*(\d+)", err)
+    if m:
+        return int(m.group(1)) + 2
+    # Default backoffs
+    return 15 if "503" in err else 20
+
+
 def analyse(stock_result: dict) -> dict | None:
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
@@ -84,11 +98,10 @@ def analyse(stock_result: dict) -> dict | None:
                 return _parse_response(response.text)
             except Exception as e:
                 err = str(e)
-                # Extract suggested retry delay from 429 error
-                retry_match = re.search(r"retry_delay\s*\{\s*seconds:\s*(\d+)", err)
-                if "429" in err and retry_match and attempt < MAX_RETRIES:
-                    wait = int(retry_match.group(1)) + 2
-                    log.warning(f"{ticker}: rate limited — waiting {wait}s before retry {attempt}")
+                is_retryable = ("429" in err or "503" in err) and attempt < MAX_RETRIES
+                if is_retryable:
+                    wait = _retry_wait(err)
+                    log.warning(f"{ticker}: {'503 overload' if '503' in err else 'rate limited'} — waiting {wait}s (attempt {attempt}/{MAX_RETRIES})")
                     time.sleep(wait)
                 else:
                     raise
