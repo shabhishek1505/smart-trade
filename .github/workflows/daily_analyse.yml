@@ -1,0 +1,45 @@
+name: Daily Stock Analysis
+
+on:
+  schedule:
+    - cron: '17 10 * * 1-5'   # 15:47 IST, Mon–Fri
+  workflow_dispatch:            # Manual trigger from GitHub UI
+
+jobs:
+  analyse:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Wake up Render backend
+        run: |
+          curl -s --retry 3 --retry-delay 10 \
+            "${{ secrets.RENDER_BACKEND_URL }}/api/health" || true
+          sleep 20
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r analyser/requirements.txt
+
+      - name: Run analysis
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        run: python analyser/analyse.py
+
+      - name: Commit results.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add config/results.json
+          git diff --staged --quiet || git commit -m "chore: update results.json [$(date -u +'%Y-%m-%d %H:%M UTC')]"
+          git pull --rebase origin stock-monitor-app
+          git push origin stock-monitor-app
