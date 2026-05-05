@@ -1,1 +1,114 @@
-{"last_run": null, "stocks": []}
+{
+  "last_run": "2026-05-06T01:01:39.096244+05:30",
+  "stocks": [
+    {
+      "ticker": "BEL.NS",
+      "display_name": "BEL",
+      "last_price": 433.55,
+      "day_change_pct": 0.52,
+      "overall_signal": "\ud83d\udd34 AVOID",
+      "strategy_results": {
+        "rsi_ema": {
+          "signal": "AVOID",
+          "reason": "Price below EMA50 (435.69)",
+          "entry_zone": null,
+          "stop_loss": null,
+          "target_1": null,
+          "target_2": null
+        },
+        "macd": {
+          "signal": "AVOID",
+          "reason": "MACD death cross \u2014 line below signal (-0.0325 < 1.9275)",
+          "entry_zone": null,
+          "stop_loss": null,
+          "target_1": null,
+          "target_2": null
+        },
+        "breakout": {
+          "signal": "WATCH",
+          "reason": "Price 8.4% below 52w high \u20b9473.45 \u2014 approaching breakout zone",
+          "entry_zone": null,
+          "stop_loss": 411.87,
+          "target_1": 487.65,
+          "target_2": 511.33
+        }
+      },
+      "notes": "Defence PSU \u2014 watch for \u20b9473 breakout",
+      "run_at": "2026-05-06T01:01:35.512982+05:30",
+      "best_entry_zone": null,
+      "best_stop_loss": null,
+      "best_target_1": null,
+      "best_target_2": null
+    },
+    {
+      "ticker": "CIPLA.NS",
+      "display_name": "Cipla",
+      "last_price": 1335.0,
+      "day_change_pct": 1.94,
+      "overall_signal": "\u26aa NEUTRAL",
+      "strategy_results": {
+        "rsi_ema": {
+          "signal": "NEUTRAL",
+          "reason": "RSI 65.7 \u2014 no clear signal",
+          "entry_zone": null,
+          "stop_loss": null,
+          "target_1": null,
+          "target_2": null
+        },
+        "volume_surge": {
+          "signal": "NEUTRAL",
+          "reason": "Volume 0.5x avg \u2014 no surge",
+          "entry_zone": null,
+          "stop_loss": null,
+          "target_1": null,
+          "target_2": null
+        }
+      },
+      "notes": "Pharma \u2014 FDA approval catalyst",
+      "run_at": "2026-05-06T01:01:36.834980+05:30",
+      "best_entry_zone": null,
+      "best_stop_loss": null,
+      "best_target_1": null,
+      "best_target_2": null
+    },
+    {
+      "ticker": "ETERNAL.NS",
+      "display_name": "Eternal (Zomato)",
+      "last_price": 248.47,
+      "day_change_pct": -1.36,
+      "overall_signal": "\ud83d\udd34 AVOID",
+      "strategy_results": {
+        "rsi_ema": {
+          "signal": "AVOID",
+          "reason": "Price below EMA50 (251.30)",
+          "entry_zone": null,
+          "stop_loss": null,
+          "target_1": null,
+          "target_2": null
+        },
+        "macd": {
+          "signal": "AVOID",
+          "reason": "MACD death cross \u2014 line below signal (2.5624 < 2.8426)",
+          "entry_zone": null,
+          "stop_loss": null,
+          "target_1": null,
+          "target_2": null
+        },
+        "bollinger": {
+          "signal": "NEUTRAL",
+          "reason": "Price \u20b9248.47 within bands (230.94\u2013266.87), RSI 49.9",
+          "entry_zone": null,
+          "stop_loss": null,
+          "target_1": null,
+          "target_2": null
+        }
+      },
+      "notes": "Formerly Zomato \u2014 rebranded Mar 2025. Wait for RSI < 42 before entering",
+      "run_at": "2026-05-06T01:01:38.096104+05:30",
+      "best_entry_zone": null,
+      "best_stop_loss": null,
+      "best_target_1": null,
+      "best_target_2": null
+    }
+  ]
+}
