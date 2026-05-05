@@ -1,58 +1,50 @@
-import pandas_ta as ta
+import ta
 
 
 def run(df, config):
     stop_pct = config.get("custom_stop_loss_pct", 5)
 
-    df = df.copy()
-    df.ta.bbands(length=20, std=2, append=True)
-    df.ta.rsi(length=14, append=True)
+    close = df["close"]
+    bb = ta.volatility.BollingerBands(close=close, window=20, window_dev=2)
+    rsi = ta.momentum.RSIIndicator(close=close, window=14).rsi()
 
-    lower_col = "BBL_20_2.0"
-    upper_col = "BBU_20_2.0"
-    bw_col = "BBB_20_2.0"
-    rsi_col = "RSI_14"
+    lower = bb.bollinger_lband().iloc[-1]
+    upper = bb.bollinger_uband().iloc[-1]
+    wband = bb.bollinger_wband()
+    rsi_val = rsi.iloc[-1]
+    close_val = close.iloc[-1]
 
-    missing = [c for c in [lower_col, upper_col, bw_col, rsi_col] if c not in df.columns]
-    if missing:
-        return _neutral("Insufficient data for Bollinger Band calculation")
-
-    close = df["close"].iloc[-1]
-    lower = df[lower_col].iloc[-1]
-    upper = df[upper_col].iloc[-1]
-    rsi = df[rsi_col].iloc[-1]
-    bw_curr = df[bw_col].iloc[-1]
-    bw_mean = df[bw_col].tail(20).mean()
+    wband_curr = wband.iloc[-1]
+    wband_mean = wband.tail(20).mean()
 
     stop_loss = round(lower * (1 - stop_pct / 100), 2)
-    t1 = round(close * 1.08, 2)
-    t2 = round(close * 1.15, 2)
+    t1 = round(close_val * 1.08, 2)
+    t2 = round(close_val * 1.15, 2)
 
-    if close <= lower and rsi < 35:
+    if close_val <= lower and rsi_val < 35:
         return {
             "signal": "BUY",
-            "reason": f"Price ₹{close:.2f} at/below lower BB ₹{lower:.2f} with RSI {rsi:.1f} (oversold)",
-            "entry_zone": [round(lower, 2), round(close, 2)],
+            "reason": f"Price ₹{close_val:.2f} at/below lower BB ₹{lower:.2f} with RSI {rsi_val:.1f} (oversold)",
+            "entry_zone": [round(lower, 2), round(close_val, 2)],
             "stop_loss": stop_loss,
             "target_1": t1,
             "target_2": t2,
         }
 
-    squeeze = bw_curr < bw_mean * 0.8
-    if squeeze:
+    if wband_curr < wband_mean * 0.8:
         return {
             "signal": "WATCH",
-            "reason": f"Bollinger squeeze detected — bandwidth {bw_curr:.2f} below 20-day avg {bw_mean:.2f} (breakout imminent)",
+            "reason": f"Bollinger squeeze — bandwidth {wband_curr:.2f} below avg {wband_mean:.2f} (breakout imminent)",
             "entry_zone": None,
             "stop_loss": stop_loss,
             "target_1": t1,
             "target_2": t2,
         }
 
-    if close >= upper and rsi > 65:
-        return _avoid(f"Price at upper BB ₹{upper:.2f} with RSI {rsi:.1f} — overbought")
+    if close_val >= upper and rsi_val > 65:
+        return _avoid(f"Price at upper BB ₹{upper:.2f} with RSI {rsi_val:.1f} — overbought")
 
-    return _neutral(f"Price ₹{close:.2f} within bands ({lower:.2f}–{upper:.2f}), RSI {rsi:.1f}")
+    return _neutral(f"Price ₹{close_val:.2f} within bands ({lower:.2f}–{upper:.2f}), RSI {rsi_val:.1f}")
 
 
 def _avoid(reason):
