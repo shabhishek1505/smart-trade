@@ -1,3 +1,4 @@
+import base64
 import json
 import os
 import threading
@@ -9,37 +10,59 @@ stocks_bp = Blueprint("stocks", __name__)
 _lock = threading.Lock()
 
 GITHUB_RAW = "https://raw.githubusercontent.com/shabhishek1505/smart-trade/stock-monitor-app"
+GITHUB_API = "https://api.github.com/repos/shabhishek1505/smart-trade"
+STOCKS_PATH = "config/stocks.json"
+BRANCH = "stock-monitor-app"
 
 
-def _read_github():
-    resp = requests.get(f"{GITHUB_RAW}/config/stocks.json", timeout=8)
+def _gh_headers():
+    pat = os.getenv("GITHUB_PAT")
+    h = {"Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"}
+    if pat:
+        h["Authorization"] = f"Bearer {pat}"
+    return h
+
+
+def _read():
+    resp = requests.get(f"{GITHUB_RAW}/{STOCKS_PATH}", timeout=8)
     resp.raise_for_status()
     return resp.json()
 
 
-def _read_local():
-    with open(current_app.config["STOCKS_PATH"]) as f:
-        return json.load(f)
+def _write(data, message):
+    pat = os.getenv("GITHUB_PAT")
+    if not pat:
+        # fall back to local write only (no persistence across deploys)
+        path = current_app.config["STOCKS_PATH"]
+        with open(str(path) + ".tmp", "w") as f:
+            json.dump(data, f, indent=2)
+        os.replace(str(path) + ".tmp", path)
+        return
 
+    # get current file SHA (required by GitHub API to update)
+    meta = requests.get(
+        f"{GITHUB_API}/contents/{STOCKS_PATH}?ref={BRANCH}",
+        headers=_gh_headers(),
+        timeout=8,
+    ).json()
+    sha = meta["sha"]
 
-def _read():
-    try:
-        return _read_github()
-    except Exception:
-        return _read_local()
-
-
-def _write(data):
-    path = current_app.config["STOCKS_PATH"]
-    tmp = str(path) + ".tmp"
-    with open(tmp, "w") as f:
-        json.dump(data, f, indent=2)
-    os.replace(tmp, path)
+    content_b64 = base64.b64encode(json.dumps(data, indent=2).encode()).decode()
+    resp = requests.put(
+        f"{GITHUB_API}/contents/{STOCKS_PATH}",
+        headers=_gh_headers(),
+        json={"message": message, "content": content_b64, "sha": sha, "branch": BRANCH},
+        timeout=10,
+    )
+    resp.raise_for_status()
 
 
 @stocks_bp.get("/stocks")
 def get_stocks():
-    return jsonify(_read())
+    try:
+        return jsonify(_read())
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 @stocks_bp.post("/stocks")
@@ -63,7 +86,7 @@ def add_stock():
             "notes": body.get("notes", ""),
         }
         data["stocks"].append(new_stock)
-        _write(data)
+        _write(data, f"feat: add {new_stock['ticker']} via UI")
 
     return jsonify(new_stock), 201
 
@@ -80,10 +103,9 @@ def update_stock(ticker):
             return jsonify({"error": "Stock not found"}), 404
 
         data["stocks"][idx].update(body)
-        _write(data)
-        updated = data["stocks"][idx]
+        _write(data, f"feat: update {ticker_upper} via UI")
 
-    return jsonify(updated)
+    return jsonify(data["stocks"][idx])
 
 
 @stocks_bp.delete("/stocks/<ticker>")
@@ -96,21 +118,21 @@ def delete_stock(ticker):
         data["stocks"] = [s for s in data["stocks"] if s["ticker"].upper() != ticker_upper]
         if len(data["stocks"]) == before:
             return jsonify({"error": "Stock not found"}), 404
-        _write(data)
+        _write(data, f"feat: remove {ticker_upper} via UI")
 
     return jsonify({"deleted": ticker_upper})
 
 
 @stocks_bp.put("/settings")
 def update_settings():
-    body = request.get_json(force=True)
     allowed = {"telegram_group_chat_id", "telegram_private_chat_id", "run_time_utc", "notify_on"}
+    body = request.get_json(force=True)
 
     with _lock:
         data = _read()
         for key in allowed:
             if key in body:
                 data["settings"][key] = body[key]
-        _write(data)
+        _write(data, "feat: update settings via UI")
 
     return jsonify(data["settings"])
