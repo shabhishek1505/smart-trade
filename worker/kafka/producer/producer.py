@@ -1,6 +1,7 @@
 from confluent_kafka import Producer
 import json
 from datetime import datetime
+from common.dto.signal import StrategySignalData
 from common.utils.kafka import wrap_kafka_message
 import logging
 from common.utils.config import KAFKA_BOOTSTRAP_SERVERS,SIGNAL_PROCESSING_KAFKA_TOPIC
@@ -13,13 +14,14 @@ producer_conf = {
 producer = Producer(producer_conf)
 
 
-def produce_signal(plan_id, trace_id, signal_data):
-    message = wrap_kafka_message({
-        "plan_id": plan_id,
-        "trace_id": trace_id,
-        "signal": signal_data,
-        "timestamp": datetime.utcnow().isoformat()
-    })
+def produce_signal(signal_data: StrategySignalData, event_id: str):
+
+    message = wrap_kafka_message(
+        event_type="STRATEGY_SIGNAL_TRIGGERED",
+        source="strategy-worker",
+        data=signal_data.dict(),
+        event_id=event_id)
+
     try:
         producer.produce(
             topic=SIGNAL_PROCESSING_KAFKA_TOPIC,
@@ -27,7 +29,7 @@ def produce_signal(plan_id, trace_id, signal_data):
             callback=kafka_delivery_report
         )
         producer.flush()
-        logger.info(f"[Kafka] Message sent for PlanID={plan_id}, Stock={stock_symbol}")
+        logger.info(f"[Kafka] Message sent for PlanID={signal_data.plan_id}, Stock={signal_data.stock_symbol}")
     except Exception as e:
         logger.error(f"[Kafka] Failed to send message: {e}")
 

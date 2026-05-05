@@ -7,3 +7,8 @@ engine = create_engine(DB_URL, echo=False, future=True)
 
 # Session factory to create sessions
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+
+def get_session():
+    """Get a new database session"""
+    return SessionLocal()

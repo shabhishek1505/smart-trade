@@ -1,6 +1,6 @@
 from .base import BaseStrategy
 
-class SmaRsiMacdStrategy(BaseStrategy):
+class  SmaRsiMacdStrategy(BaseStrategy):
     def evaluate(self):
         # Placeholder logic
         signal = {
