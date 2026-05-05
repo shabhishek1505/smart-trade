@@ -41,6 +41,17 @@ def build_summary(results, run_at):
     )
 
 
+def _llm_line(r):
+    """Return a compact AI verdict line, or empty string if not available."""
+    llm = r.get("llm_verdict")
+    if not llm:
+        return ""
+    icons = {"BULLISH": "🤖▲", "BEARISH": "🤖▼", "NEUTRAL": "🤖◆"}
+    icon = icons.get(llm["verdict"], "🤖")
+    conf = llm.get("confidence", "")
+    return f"{icon} AI: <b>{llm['verdict']}</b> ({conf})"
+
+
 def build_buy_message(buys, run_at):
     date_str = run_at.strftime("%d %b %Y")
     lines = [f"🟢 <b>BUY SIGNALS — {date_str}</b>\n"]
@@ -71,6 +82,10 @@ def build_buy_message(buys, run_at):
             if t2:
                 parts.append(f"T2: ₹{t2}")
             lines.append(" | ".join(parts))
+
+        ai = _llm_line(r)
+        if ai:
+            lines.append(ai)
         lines.append("")
     return "\n".join(lines)
 
@@ -87,6 +102,10 @@ def build_watch_message(watches, run_at):
         for strat, res in r.get("strategy_results", {}).items():
             if res.get("signal") == "WATCH":
                 lines.append(f"  {res.get('reason', '')}")
+
+        ai = _llm_line(r)
+        if ai:
+            lines.append(ai)
         lines.append("")
     return "\n".join(lines)
 
@@ -103,6 +122,17 @@ def build_private_detail(results, run_at):
 
         for strat, res in r.get("strategy_results", {}).items():
             lines.append(f"  [{strat}] {res.get('signal')} — {res.get('reason', '')}")
+
+        llm = r.get("llm_verdict")
+        if llm:
+            icons = {"BULLISH": "▲", "BEARISH": "▼", "NEUTRAL": "◆"}
+            icon = icons.get(llm["verdict"], "◆")
+            lines.append(
+                f"🤖 AI {icon} <b>{llm['verdict']}</b> ({llm.get('confidence', '')}) — {llm.get('reasoning', '')}"
+            )
+            ctx = llm.get("market_context", "").strip()
+            if ctx:
+                lines.append(f"   <i>{ctx}</i>")
 
         notes = r.get("notes", "").strip()
         if notes:
