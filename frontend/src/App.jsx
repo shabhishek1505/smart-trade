@@ -69,6 +69,7 @@ export default function App() {
           stocks={stocks}
           onSave={handleSaveSettings}
           onClose={() => setActiveView("dashboard")}
+          onResultsRefresh={fetchData}
         />
       )}
 
