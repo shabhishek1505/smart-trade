@@ -62,6 +62,9 @@ def analyse_stock(stock_cfg):
         log.warning(f"{ticker}: insufficient data")
         return None
 
+    # newer yfinance returns MultiIndex columns — flatten to single level
+    if hasattr(df.columns, "levels"):
+        df.columns = df.columns.get_level_values(0)
     df.columns = [c.lower() for c in df.columns]
     df = df.dropna()
 

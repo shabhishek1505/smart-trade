@@ -9,7 +9,7 @@ def run(df, config):
     rsi = ta.momentum.RSIIndicator(close=close, window=14).rsi()
 
     lower = bb.bollinger_lband().iloc[-1]
-    upper = bb.bollinger_uband().iloc[-1]
+    upper = bb.bollinger_hband().iloc[-1]
     wband = bb.bollinger_wband()
     rsi_val = rsi.iloc[-1]
     close_val = close.iloc[-1]
