@@ -1,21 +1,35 @@
 import json
 import subprocess
 import sys
+import os
 from datetime import datetime, timezone
 from pathlib import Path
+
+import requests
 from flask import Blueprint, jsonify, current_app
 
 signals_bp = Blueprint("signals", __name__)
 
+GITHUB_RAW = "https://raw.githubusercontent.com/shabhishek1505/smart-trade/stock-monitor-app"
+
+
+def _fetch_github(path):
+    url = f"{GITHUB_RAW}/{path}"
+    resp = requests.get(url, timeout=8)
+    resp.raise_for_status()
+    return resp.json()
+
 
 @signals_bp.get("/results")
 def get_results():
-    path = current_app.config["RESULTS_PATH"]
     try:
-        with open(path) as f:
-            return jsonify(json.load(f))
-    except FileNotFoundError:
-        return jsonify({"last_run": None, "stocks": []})
+        return jsonify(_fetch_github("config/results.json"))
+    except Exception:
+        try:
+            with open(current_app.config["RESULTS_PATH"]) as f:
+                return jsonify(json.load(f))
+        except Exception:
+            return jsonify({"last_run": None, "stocks": []})
 
 
 @signals_bp.get("/health")

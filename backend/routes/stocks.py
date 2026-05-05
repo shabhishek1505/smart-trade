@@ -1,14 +1,32 @@
 import json
+import os
 import threading
+
+import requests
 from flask import Blueprint, request, jsonify, current_app
 
 stocks_bp = Blueprint("stocks", __name__)
 _lock = threading.Lock()
 
+GITHUB_RAW = "https://raw.githubusercontent.com/shabhishek1505/smart-trade/stock-monitor-app"
 
-def _read():
+
+def _read_github():
+    resp = requests.get(f"{GITHUB_RAW}/config/stocks.json", timeout=8)
+    resp.raise_for_status()
+    return resp.json()
+
+
+def _read_local():
     with open(current_app.config["STOCKS_PATH"]) as f:
         return json.load(f)
+
+
+def _read():
+    try:
+        return _read_github()
+    except Exception:
+        return _read_local()
 
 
 def _write(data):
@@ -16,15 +34,12 @@ def _write(data):
     tmp = str(path) + ".tmp"
     with open(tmp, "w") as f:
         json.dump(data, f, indent=2)
-    import os
     os.replace(tmp, path)
 
 
 @stocks_bp.get("/stocks")
 def get_stocks():
-    with _lock:
-        data = _read()
-    return jsonify(data)
+    return jsonify(_read())
 
 
 @stocks_bp.post("/stocks")
