@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 
 log = logging.getLogger("llm_analyser")
 
-MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash-lite")
+MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 MAX_RETRIES = 2
 
 
