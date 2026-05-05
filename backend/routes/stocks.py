@@ -24,9 +24,14 @@ def _gh_headers():
 
 
 def _read():
-    resp = requests.get(f"{GITHUB_RAW}/{STOCKS_PATH}", timeout=8)
+    """Always fetch via GitHub API — no CDN caching."""
+    resp = requests.get(
+        f"{GITHUB_API}/contents/{STOCKS_PATH}?ref={BRANCH}",
+        headers=_gh_headers(),
+        timeout=8,
+    )
     resp.raise_for_status()
-    return resp.json()
+    return json.loads(base64.b64decode(resp.json()["content"]).decode())
 
 
 def _write(data, message):
