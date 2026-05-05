@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-05-06T01:01:39.096244+05:30",
+  "last_run": "2026-05-06T01:07:14.706370+05:30",
   "stocks": [
     {
       "ticker": "BEL.NS",
@@ -34,7 +34,7 @@
         }
       },
       "notes": "Defence PSU \u2014 watch for \u20b9473 breakout",
-      "run_at": "2026-05-06T01:01:35.512982+05:30",
+      "run_at": "2026-05-06T01:07:08.686673+05:30",
       "best_entry_zone": null,
       "best_stop_loss": null,
       "best_target_1": null,
@@ -65,7 +65,7 @@
         }
       },
       "notes": "Pharma \u2014 FDA approval catalyst",
-      "run_at": "2026-05-06T01:01:36.834980+05:30",
+      "run_at": "2026-05-06T01:07:09.981921+05:30",
       "best_entry_zone": null,
       "best_stop_loss": null,
       "best_target_1": null,
@@ -104,11 +104,117 @@
         }
       },
       "notes": "Formerly Zomato \u2014 rebranded Mar 2025. Wait for RSI < 42 before entering",
-      "run_at": "2026-05-06T01:01:38.096104+05:30",
+      "run_at": "2026-05-06T01:07:11.201267+05:30",
       "best_entry_zone": null,
       "best_stop_loss": null,
       "best_target_1": null,
       "best_target_2": null
+    },
+    {
+      "ticker": "ULTRACEMCO.NS",
+      "display_name": "UltraTech Cement",
+      "last_price": 11758.0,
+      "day_change_pct": 1.48,
+      "overall_signal": "\ud83d\udfe2 BUY SIGNAL",
+      "strategy_results": {
+        "rsi_ema": {
+          "signal": "BUY",
+          "reason": "RSI 51.4 in entry zone (40\u201355) and price above EMA50 (11749.27)",
+          "entry_zone": [
+            11749.27,
+            11758.0
+          ],
+          "stop_loss": 11161.81,
+          "target_1": 12698.64,
+          "target_2": 13521.7
+        },
+        "macd": {
+          "signal": "WATCH",
+          "reason": "MACD above signal but histogram shrinking (3.4697) \u2014 momentum fading",
+          "entry_zone": null,
+          "stop_loss": 11170.1,
+          "target_1": 12698.64,
+          "target_2": null
+        },
+        "breakout": {
+          "signal": "NEUTRAL",
+          "reason": "Price 10.3% below 52w high \u2014 no breakout signal",
+          "entry_zone": null,
+          "stop_loss": null,
+          "target_1": null,
+          "target_2": null
+        },
+        "bollinger": {
+          "signal": "NEUTRAL",
+          "reason": "Price \u20b911758.00 within bands (10857.45\u201312489.35), RSI 51.4",
+          "entry_zone": null,
+          "stop_loss": null,
+          "target_1": null,
+          "target_2": null
+        }
+      },
+      "notes": "BUY signal detected \u2014 cement sector momentum",
+      "run_at": "2026-05-06T01:07:12.462528+05:30",
+      "best_entry_zone": [
+        11749.27,
+        11758.0
+      ],
+      "best_stop_loss": 11161.81,
+      "best_target_1": 12698.64,
+      "best_target_2": 13521.7
+    },
+    {
+      "ticker": "TITAN.NS",
+      "display_name": "Titan",
+      "last_price": 4363.0,
+      "day_change_pct": -0.51,
+      "overall_signal": "\ud83d\udfe2 BUY SIGNAL",
+      "strategy_results": {
+        "rsi_ema": {
+          "signal": "BUY",
+          "reason": "RSI 50.9 in entry zone (40\u201355) and price above EMA50 (4280.58)",
+          "entry_zone": [
+            4280.58,
+            4363.0
+          ],
+          "stop_loss": 4066.55,
+          "target_1": 4712.04,
+          "target_2": 5017.45
+        },
+        "macd": {
+          "signal": "AVOID",
+          "reason": "MACD death cross \u2014 line below signal (49.0521 < 68.2995)",
+          "entry_zone": null,
+          "stop_loss": null,
+          "target_1": null,
+          "target_2": null
+        },
+        "bollinger": {
+          "signal": "WATCH",
+          "reason": "Bollinger squeeze \u2014 bandwidth 7.05 below avg 16.60 (breakout imminent)",
+          "entry_zone": null,
+          "stop_loss": 4060.55,
+          "target_1": 4712.04,
+          "target_2": 5017.45
+        },
+        "volume_surge": {
+          "signal": "NEUTRAL",
+          "reason": "Volume 0.6x avg \u2014 no surge",
+          "entry_zone": null,
+          "stop_loss": null,
+          "target_1": null,
+          "target_2": null
+        }
+      },
+      "notes": "BUY signal detected \u2014 jewellery + watches consumer play",
+      "run_at": "2026-05-06T01:07:13.706240+05:30",
+      "best_entry_zone": [
+        4280.58,
+        4363.0
+      ],
+      "best_stop_loss": 4066.55,
+      "best_target_1": 4712.04,
+      "best_target_2": 5017.45
     }
   ]
 }
