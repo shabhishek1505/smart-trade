@@ -1,4 +1,4 @@
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, Sparkles } from "lucide-react";
 import StrategyBadge from "./StrategyBadge";
 
 function OverallBadge({ signal }) {
@@ -17,6 +17,37 @@ function OverallBadge({ signal }) {
   );
 }
 
+function LLMVerdictBadge({ verdict }) {
+  const styles = {
+    BULLISH: "bg-emerald-100 text-emerald-800 border-emerald-200",
+    BEARISH: "bg-rose-100 text-rose-800 border-rose-200",
+    NEUTRAL: "bg-slate-100 text-slate-700 border-slate-200",
+  };
+  const icons = { BULLISH: "▲", BEARISH: "▼", NEUTRAL: "◆" };
+  const cls = styles[verdict] || styles.NEUTRAL;
+  return (
+    <span className={`text-xs font-bold px-2 py-0.5 rounded border ${cls}`}>
+      {icons[verdict] || "◆"} {verdict}
+    </span>
+  );
+}
+
+function ConfidenceDots({ confidence }) {
+  const levels = { HIGH: 3, MEDIUM: 2, LOW: 1 };
+  const filled = levels[confidence] || 1;
+  return (
+    <span className="flex gap-0.5 items-center">
+      {[1, 2, 3].map((i) => (
+        <span
+          key={i}
+          className={`w-1.5 h-1.5 rounded-full ${i <= filled ? "bg-violet-500" : "bg-gray-200"}`}
+        />
+      ))}
+      <span className="text-xs text-gray-400 ml-0.5">{confidence}</span>
+    </span>
+  );
+}
+
 export default function StockCard({ result, stockConfig, onEdit, onDelete }) {
   const name = result?.display_name || stockConfig?.display_name || stockConfig?.ticker;
   const ticker = result?.ticker || stockConfig?.ticker;
@@ -25,6 +56,7 @@ export default function StockCard({ result, stockConfig, onEdit, onDelete }) {
   const overall = result?.overall_signal;
   const stratResults = result?.strategy_results || {};
   const notes = stockConfig?.notes || result?.notes;
+  const llm = result?.llm_verdict;
 
   const entryZone = result?.best_entry_zone;
   const sl = result?.best_stop_loss;
@@ -83,6 +115,26 @@ export default function StockCard({ result, stockConfig, onEdit, onDelete }) {
           <div>Entry: ₹{entryZone[0].toLocaleString("en-IN")} – ₹{entryZone[1].toLocaleString("en-IN")}</div>
           {sl && <div>SL: ₹{sl.toLocaleString("en-IN")}</div>}
           {t1 && <div>T1: ₹{t1.toLocaleString("en-IN")}{t2 ? ` | T2: ₹${t2.toLocaleString("en-IN")}` : ""}</div>}
+        </div>
+      )}
+
+      {/* AI Verdict */}
+      {llm && (
+        <div className="border border-violet-100 bg-violet-50/60 rounded-lg p-3 flex flex-col gap-1.5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1.5 text-violet-700">
+              <Sparkles size={13} />
+              <span className="text-xs font-semibold tracking-wide uppercase">AI Analysis</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <ConfidenceDots confidence={llm.confidence} />
+              <LLMVerdictBadge verdict={llm.verdict} />
+            </div>
+          </div>
+          <p className="text-xs text-gray-700 leading-relaxed">{llm.reasoning}</p>
+          {llm.market_context && (
+            <p className="text-xs text-violet-600 italic">{llm.market_context}</p>
+          )}
         </div>
       )}
 

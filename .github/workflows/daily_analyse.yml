@@ -36,6 +36,7 @@ jobs:
       - name: Run analysis
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python analyser/analyse.py
 
       - name: Commit results.json

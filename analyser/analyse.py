@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 
 from strategies import STRATEGY_REGISTRY
 import notifier
+import llm_analyser
 
 load_dotenv()
 
@@ -95,7 +96,7 @@ def analyse_stock(stock_cfg):
     overall = calculate_overall_signal(strategy_results)
     levels = pick_best_levels(strategy_results)
 
-    return {
+    result = {
         "ticker": ticker,
         "display_name": stock_cfg.get("display_name", ticker),
         "last_price": round(close, 2),
@@ -106,6 +107,14 @@ def analyse_stock(stock_cfg):
         "run_at": datetime.now(IST).isoformat(),
         **levels,
     }
+
+    log.info(f"Requesting LLM verdict for {ticker}")
+    result["llm_verdict"] = llm_analyser.analyse(result)
+    if result["llm_verdict"]:
+        log.info(f"{ticker} LLM verdict: {result['llm_verdict']['verdict']} ({result['llm_verdict']['confidence']})")
+    time.sleep(2)  # respect Gemini free-tier rate limit between stocks
+
+    return result
 
 
 def main():
