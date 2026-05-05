@@ -3,48 +3,82 @@
     "telegram_group_chat_id": "-5275432544",
     "telegram_private_chat_id": "YOUR_PERSONAL_CHAT_ID",
     "run_time_utc": "10:17",
-    "notify_on": ["BUY", "WATCH"]
+    "notify_on": [
+      "BUY",
+      "WATCH"
+    ]
   },
   "stocks": [
     {
       "ticker": "BEL.NS",
       "display_name": "BEL",
       "active": true,
-      "strategies": ["rsi_ema", "macd", "breakout"],
+      "strategies": [
+        "rsi_ema",
+        "macd",
+        "breakout"
+      ],
       "custom_stop_loss_pct": 5,
-      "notes": "Defence PSU — watch for ₹473 breakout"
+      "notes": "Defence PSU \u2014 watch for \u20b9473 breakout"
     },
     {
       "ticker": "CIPLA.NS",
       "display_name": "Cipla",
       "active": true,
-      "strategies": ["rsi_ema", "volume_surge"],
+      "strategies": [
+        "rsi_ema",
+        "volume_surge"
+      ],
       "custom_stop_loss_pct": 4,
-      "notes": "Pharma — FDA approval catalyst"
+      "notes": "Pharma \u2014 FDA approval catalyst"
     },
     {
       "ticker": "ETERNAL.NS",
       "display_name": "Eternal (Zomato)",
       "active": true,
-      "strategies": ["rsi_ema", "macd", "bollinger"],
+      "strategies": [
+        "rsi_ema",
+        "macd",
+        "bollinger"
+      ],
       "custom_stop_loss_pct": 6,
-      "notes": "Formerly Zomato — rebranded Mar 2025. Wait for RSI < 42 before entering"
+      "notes": "Formerly Zomato \u2014 rebranded Mar 2025. Wait for RSI < 42 before entering"
     },
     {
       "ticker": "ULTRACEMCO.NS",
       "display_name": "UltraTech Cement",
       "active": true,
-      "strategies": ["rsi_ema", "macd", "breakout", "bollinger"],
+      "strategies": [
+        "rsi_ema",
+        "macd",
+        "breakout",
+        "bollinger"
+      ],
       "custom_stop_loss_pct": 5,
-      "notes": "BUY signal detected — cement sector momentum"
+      "notes": "BUY signal detected \u2014 cement sector momentum"
     },
     {
       "ticker": "TITAN.NS",
       "display_name": "Titan",
       "active": true,
-      "strategies": ["rsi_ema", "macd", "bollinger", "volume_surge"],
+      "strategies": [
+        "rsi_ema",
+        "macd",
+        "bollinger",
+        "volume_surge"
+      ],
       "custom_stop_loss_pct": 5,
-      "notes": "BUY signal detected — jewellery + watches consumer play"
+      "notes": "BUY signal detected \u2014 jewellery + watches consumer play"
+    },
+    {
+      "ticker": "RIL.NS",
+      "display_name": "Reliance",
+      "active": true,
+      "strategies": [
+        "rsi_ema"
+      ],
+      "custom_stop_loss_pct": 5,
+      "notes": ""
     }
   ]
 }
