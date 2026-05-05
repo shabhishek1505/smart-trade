@@ -38,7 +38,7 @@ export default function App() {
       await axios.post("/api/stocks", formData);
     }
     setModalState({ open: false, editStock: null });
-    fetchData();
+    await fetchData();
   };
 
   const handleDeleteStock = async (ticker) => {

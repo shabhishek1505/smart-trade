@@ -40,7 +40,7 @@ export default function AddStockModal({ editStock, existingTickers, onSave, onCl
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
@@ -53,7 +53,14 @@ export default function AddStockModal({ editStock, existingTickers, onSave, onCl
       return setError("This ticker is already in your watchlist");
     }
 
-    onSave({ ...form, ticker, _isEdit: isEdit });
+    try {
+      await onSave({ ...form, ticker, _isEdit: isEdit });
+    } catch (err) {
+      const msg = err.response?.data?.error || err.message || "Failed to save";
+      setError(msg.includes("GITHUB_PAT")
+        ? "GITHUB_PAT not set on Render — add it in Render → Environment Variables"
+        : msg);
+    }
   };
 
   return (
