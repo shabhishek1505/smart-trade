@@ -12,6 +12,15 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [activeView, setActiveView] = useState("dashboard");
   const [modalState, setModalState] = useState({ open: false, editStock: null });
+  const [darkMode, setDarkMode] = useState(() => localStorage.getItem("theme") === "dark");
+
+  const toggleDark = () => {
+    setDarkMode((d) => {
+      const next = !d;
+      localStorage.setItem("theme", next ? "dark" : "light");
+      return next;
+    });
+  };
 
   const fetchData = useCallback(async () => {
     try {
@@ -53,34 +62,38 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {activeView === "dashboard" ? (
-        <Dashboard
-          stocks={stocks}
-          results={results}
-          loading={loading}
-          onAddStock={() => setModalState({ open: true, editStock: null })}
-          onEditStock={(stock) => setModalState({ open: true, editStock: stock })}
-          onDeleteStock={handleDeleteStock}
-          onOpenSettings={() => setActiveView("settings")}
-        />
-      ) : (
-        <SettingsPanel
-          stocks={stocks}
-          onSave={handleSaveSettings}
-          onClose={() => setActiveView("dashboard")}
-          onResultsRefresh={fetchData}
-        />
-      )}
+    <div className={darkMode ? "dark" : ""}>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+        {activeView === "dashboard" ? (
+          <Dashboard
+            stocks={stocks}
+            results={results}
+            loading={loading}
+            darkMode={darkMode}
+            onToggleDark={toggleDark}
+            onAddStock={() => setModalState({ open: true, editStock: null })}
+            onEditStock={(stock) => setModalState({ open: true, editStock: stock })}
+            onDeleteStock={handleDeleteStock}
+            onOpenSettings={() => setActiveView("settings")}
+          />
+        ) : (
+          <SettingsPanel
+            stocks={stocks}
+            onSave={handleSaveSettings}
+            onClose={() => setActiveView("dashboard")}
+            onResultsRefresh={fetchData}
+          />
+        )}
 
-      {modalState.open && (
-        <AddStockModal
-          editStock={modalState.editStock}
-          existingTickers={stocks.map((s) => s.ticker)}
-          onSave={handleSaveStock}
-          onClose={() => setModalState({ open: false, editStock: null })}
-        />
-      )}
+        {modalState.open && (
+          <AddStockModal
+            editStock={modalState.editStock}
+            existingTickers={stocks.map((s) => s.ticker)}
+            onSave={handleSaveStock}
+            onClose={() => setModalState({ open: false, editStock: null })}
+          />
+        )}
+      </div>
     </div>
   );
 }

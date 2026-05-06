@@ -1,11 +1,8 @@
-import { Settings, Plus } from "lucide-react";
+import { Settings, Plus, Sun, Moon } from "lucide-react";
 import StockCard from "./StockCard";
-
-const IST_OFFSET = 5.5 * 60;
 
 function formatIST(isoStr) {
   if (!isoStr) return "Never";
-  const d = new Date(isoStr);
   return new Intl.DateTimeFormat("en-IN", {
     timeZone: "Asia/Kolkata",
     day: "2-digit",
@@ -13,7 +10,7 @@ function formatIST(isoStr) {
     year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
-  }).format(d);
+  }).format(new Date(isoStr));
 }
 
 function SummaryPill({ label, count, color }) {
@@ -25,7 +22,7 @@ function SummaryPill({ label, count, color }) {
   );
 }
 
-export default function Dashboard({ stocks, results, loading, onAddStock, onEditStock, onDeleteStock, onOpenSettings }) {
+export default function Dashboard({ stocks, results, loading, darkMode, onToggleDark, onAddStock, onEditStock, onDeleteStock, onOpenSettings }) {
   const resultMap = Object.fromEntries((results.stocks || []).map((r) => [r.ticker, r]));
 
   const counts = { BUY: 0, WATCH: 0, AVOID: 0, NEUTRAL: 0 };
@@ -46,27 +43,36 @@ export default function Dashboard({ stocks, results, loading, onAddStock, onEdit
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Stock Monitor</h1>
-          <p className="text-xs text-gray-400 mt-0.5">Last run: {formatIST(results.last_run)}</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Stock Monitor</h1>
+          <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">Last run: {formatIST(results.last_run)}</p>
         </div>
-        <button onClick={onOpenSettings} className="p-2 text-gray-400 hover:text-gray-700 transition-colors">
-          <Settings size={22} />
-        </button>
+        <div className="flex items-center gap-1">
+          <button
+            onClick={onToggleDark}
+            className="p-2 text-gray-400 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+            aria-label="Toggle dark mode"
+          >
+            {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+          <button onClick={onOpenSettings} className="p-2 text-gray-400 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
+            <Settings size={22} />
+          </button>
+        </div>
       </div>
 
       {/* Summary bar */}
       <div className="flex flex-wrap gap-2 mb-6">
-        <SummaryPill label="🟢 BUY" count={counts.BUY} color="bg-green-50 text-green-700" />
-        <SummaryPill label="🟡 WATCH" count={counts.WATCH} color="bg-yellow-50 text-yellow-700" />
-        <SummaryPill label="🔴 AVOID" count={counts.AVOID} color="bg-red-50 text-red-700" />
-        <SummaryPill label="⚪ NEUTRAL" count={counts.NEUTRAL} color="bg-gray-100 text-gray-600" />
+        <SummaryPill label="🟢 BUY"     count={counts.BUY}     color="bg-green-50  dark:bg-green-900/30  text-green-700  dark:text-green-400" />
+        <SummaryPill label="🟡 WATCH"   count={counts.WATCH}   color="bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400" />
+        <SummaryPill label="🔴 AVOID"   count={counts.AVOID}   color="bg-red-50    dark:bg-red-900/30    text-red-700    dark:text-red-400" />
+        <SummaryPill label="⚪ NEUTRAL" count={counts.NEUTRAL} color="bg-gray-100  dark:bg-gray-700      text-gray-600   dark:text-gray-300" />
       </div>
 
       {/* Grid */}
       {loading ? (
-        <div className="text-center text-gray-400 py-20">Loading…</div>
+        <div className="text-center text-gray-400 dark:text-gray-500 py-20">Loading…</div>
       ) : displayStocks.length === 0 ? (
-        <div className="text-center text-gray-400 py-20">
+        <div className="text-center text-gray-400 dark:text-gray-500 py-20">
           <p className="text-lg mb-2">No stocks yet</p>
           <p className="text-sm">Click + to add your first stock</p>
         </div>
