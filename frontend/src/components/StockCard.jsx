@@ -1,5 +1,14 @@
-import { Pencil, Trash2, Sparkles } from "lucide-react";
+import { useState } from "react";
+import { Pencil, Trash2, Sparkles, ChevronDown, ChevronUp } from "lucide-react";
 import StrategyBadge from "./StrategyBadge";
+
+const STRAT_LABELS = {
+  rsi_ema:      "RSI + EMA",
+  macd:         "MACD",
+  bollinger:    "Bollinger",
+  breakout:     "Breakout",
+  volume_surge: "Volume",
+};
 
 function OverallBadge({ signal }) {
   if (!signal) return <span className="text-gray-400 dark:text-gray-500 text-sm">Pending analysis</span>;
@@ -10,11 +19,7 @@ function OverallBadge({ signal }) {
     : signal.includes("AVOID")
     ? "bg-red-100 dark:bg-red-900/40 text-red-800 dark:text-red-300"
     : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300";
-  return (
-    <span className={`text-sm font-semibold px-3 py-1 rounded-full ${color}`}>
-      {signal}
-    </span>
-  );
+  return <span className={`text-sm font-semibold px-3 py-1 rounded-full ${color}`}>{signal}</span>;
 }
 
 function LLMVerdictBadge({ verdict }) {
@@ -24,9 +29,8 @@ function LLMVerdictBadge({ verdict }) {
     NEUTRAL: "bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-600",
   };
   const icons = { BULLISH: "▲", BEARISH: "▼", NEUTRAL: "◆" };
-  const cls = styles[verdict] || styles.NEUTRAL;
   return (
-    <span className={`text-xs font-bold px-2 py-0.5 rounded border ${cls}`}>
+    <span className={`text-xs font-bold px-2 py-0.5 rounded border ${styles[verdict] || styles.NEUTRAL}`}>
       {icons[verdict] || "◆"} {verdict}
     </span>
   );
@@ -38,117 +42,168 @@ function ConfidenceDots({ confidence }) {
   return (
     <span className="flex gap-0.5 items-center">
       {[1, 2, 3].map((i) => (
-        <span
-          key={i}
-          className={`w-1.5 h-1.5 rounded-full ${i <= filled ? "bg-violet-500" : "bg-gray-200 dark:bg-gray-600"}`}
-        />
+        <span key={i} className={`w-1.5 h-1.5 rounded-full ${i <= filled ? "bg-violet-500" : "bg-gray-200 dark:bg-gray-600"}`} />
       ))}
       <span className="text-xs text-gray-400 dark:text-gray-500 ml-0.5">{confidence}</span>
     </span>
   );
 }
 
+function IndicatorTable({ stratName, stratResult }) {
+  const indicators = stratResult?.indicators;
+  if (!indicators || Object.keys(indicators).length === 0) return null;
+  return (
+    <div className="mb-3 last:mb-0">
+      <div className="flex items-center gap-2 mb-1">
+        <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+          {STRAT_LABELS[stratName] || stratName}
+        </span>
+        <StrategyBadge strategy={stratName} signal={stratResult.signal} size="xs" />
+      </div>
+      {stratResult.reason && (
+        <p className="text-xs text-gray-500 dark:text-gray-400 italic mb-1.5">{stratResult.reason}</p>
+      )}
+      <div className="grid grid-cols-2 gap-x-4 gap-y-0.5">
+        {Object.entries(indicators).map(([key, val]) => (
+          <div key={key} className="flex justify-between text-xs py-0.5 border-b border-gray-100 dark:border-gray-700/50">
+            <span className="text-gray-500 dark:text-gray-400">{key}</span>
+            <span className="font-medium text-gray-800 dark:text-gray-200 tabular-nums">{val}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function StockCard({ result, stockConfig, onEdit, onDelete }) {
-  const name = result?.display_name || stockConfig?.display_name || stockConfig?.ticker;
-  const ticker = result?.ticker || stockConfig?.ticker;
-  const price = result?.last_price;
-  const chg = result?.day_change_pct;
-  const overall = result?.overall_signal;
+  const [expanded, setExpanded] = useState(false);
+
+  const name       = result?.display_name || stockConfig?.display_name || stockConfig?.ticker;
+  const ticker     = result?.ticker || stockConfig?.ticker;
+  const price      = result?.last_price;
+  const chg        = result?.day_change_pct;
+  const overall    = result?.overall_signal;
   const stratResults = result?.strategy_results || {};
-  const notes = stockConfig?.notes || result?.notes;
-  const llm = result?.llm_verdict;
-  const runAt = result?.run_at
+  const notes      = stockConfig?.notes || result?.notes;
+  const llm        = result?.llm_verdict;
+  const runAt      = result?.run_at
     ? new Date(result.run_at).toLocaleString("en-IN", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit", hour12: true })
     : null;
 
   const entryZone = result?.best_entry_zone;
-  const sl = result?.best_stop_loss;
-  const t1 = result?.best_target_1;
-  const t2 = result?.best_target_2;
+  const sl  = result?.best_stop_loss;
+  const t1  = result?.best_target_1;
+  const t2  = result?.best_target_2;
+
+  const hasIndicators = Object.values(stratResults).some((r) => r?.indicators);
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-4 flex flex-col gap-3 transition-colors">
-      {/* Header */}
-      <div className="flex items-start justify-between">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="font-bold text-gray-900 dark:text-gray-100 text-lg">{name}</span>
-            <span className="text-xs text-gray-400 dark:text-gray-500">{ticker}</span>
-          </div>
-          {price != null && (
-            <div className="flex items-center gap-2 mt-0.5">
-              <span className="text-gray-700 dark:text-gray-300 font-medium">₹{price.toLocaleString("en-IN")}</span>
-              {chg != null && (
-                <span className={`text-sm font-medium ${chg >= 0 ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}`}>
-                  {chg >= 0 ? "+" : ""}{chg.toFixed(2)}%
-                </span>
-              )}
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col transition-colors">
+      {/* Main content — always visible */}
+      <div className="p-4 flex flex-col gap-3">
+        {/* Header */}
+        <div className="flex items-start justify-between">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-gray-900 dark:text-gray-100 text-lg">{name}</span>
+              <span className="text-xs text-gray-400 dark:text-gray-500">{ticker}</span>
             </div>
-          )}
+            {price != null && (
+              <div className="flex items-center gap-2 mt-0.5">
+                <span className="text-gray-700 dark:text-gray-300 font-medium">₹{price.toLocaleString("en-IN")}</span>
+                {chg != null && (
+                  <span className={`text-sm font-medium ${chg >= 0 ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}`}>
+                    {chg >= 0 ? "+" : ""}{chg.toFixed(2)}%
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
+          <div className="flex gap-1">
+            {onEdit && (
+              <button onClick={() => onEdit(stockConfig)} className="p-1 text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
+                <Pencil size={15} />
+              </button>
+            )}
+            {onDelete && (
+              <button onClick={() => onDelete(ticker)} className="p-1 text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-colors">
+                <Trash2 size={15} />
+              </button>
+            )}
+          </div>
         </div>
-        <div className="flex gap-1">
-          {onEdit && (
-            <button onClick={() => onEdit(stockConfig)} className="p-1 text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
-              <Pencil size={15} />
-            </button>
-          )}
-          {onDelete && (
-            <button onClick={() => onDelete(ticker)} className="p-1 text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-colors">
-              <Trash2 size={15} />
+
+        <OverallBadge signal={overall} />
+
+        {/* Strategy badges */}
+        {Object.keys(stratResults).length > 0 && (
+          <div className="flex flex-wrap gap-1.5">
+            {Object.entries(stratResults).map(([strat, res]) => (
+              <StrategyBadge key={strat} strategy={strat} signal={res.signal} size="sm" />
+            ))}
+          </div>
+        )}
+
+        {/* Levels */}
+        {entryZone && (
+          <div className="text-xs text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-700/50 rounded-lg p-2 space-y-0.5">
+            <div>Entry: ₹{entryZone[0].toLocaleString("en-IN")} – ₹{entryZone[1].toLocaleString("en-IN")}</div>
+            {sl && <div>SL: ₹{sl.toLocaleString("en-IN")}</div>}
+            {t1 && <div>T1: ₹{t1.toLocaleString("en-IN")}{t2 ? ` | T2: ₹${t2.toLocaleString("en-IN")}` : ""}</div>}
+          </div>
+        )}
+
+        {/* AI Verdict */}
+        {llm && (
+          <div className="border border-violet-100 dark:border-violet-800/50 bg-violet-50/60 dark:bg-violet-900/20 rounded-lg p-3 flex flex-col gap-1.5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5 text-violet-700 dark:text-violet-400">
+                <Sparkles size={13} />
+                <span className="text-xs font-semibold tracking-wide uppercase">AI Analysis</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <ConfidenceDots confidence={llm.confidence} />
+                <LLMVerdictBadge verdict={llm.verdict} />
+              </div>
+            </div>
+            <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">{llm.reasoning}</p>
+            {llm.market_context && (
+              <p className="text-xs text-violet-600 dark:text-violet-400 italic">{llm.market_context}</p>
+            )}
+          </div>
+        )}
+
+        {/* Notes */}
+        {notes && (
+          <p className="text-xs text-gray-500 dark:text-gray-400 italic border-t border-gray-50 dark:border-gray-700 pt-2">{notes}</p>
+        )}
+
+        {/* Footer row */}
+        <div className="flex items-center justify-between pt-1">
+          {runAt
+            ? <p className="text-xs text-gray-400 dark:text-gray-500">↻ {runAt}</p>
+            : <span />}
+          {hasIndicators && (
+            <button
+              onClick={() => setExpanded((e) => !e)}
+              className="flex items-center gap-1 text-xs text-blue-500 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium transition-colors"
+            >
+              {expanded ? "Hide details" : "Show indicators"}
+              {expanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
             </button>
           )}
         </div>
       </div>
 
-      {/* Overall signal */}
-      <OverallBadge signal={overall} />
-
-      {/* Strategy tags */}
-      {Object.keys(stratResults).length > 0 && (
-        <div className="flex flex-wrap gap-1.5">
-          {Object.entries(stratResults).map(([strat, res]) => (
-            <StrategyBadge key={strat} strategy={strat} signal={res.signal} size="sm" />
-          ))}
-        </div>
-      )}
-
-      {/* Levels */}
-      {entryZone && (
-        <div className="text-xs text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-700/50 rounded-lg p-2 space-y-0.5">
-          <div>Entry: ₹{entryZone[0].toLocaleString("en-IN")} – ₹{entryZone[1].toLocaleString("en-IN")}</div>
-          {sl && <div>SL: ₹{sl.toLocaleString("en-IN")}</div>}
-          {t1 && <div>T1: ₹{t1.toLocaleString("en-IN")}{t2 ? ` | T2: ₹${t2.toLocaleString("en-IN")}` : ""}</div>}
-        </div>
-      )}
-
-      {/* AI Verdict */}
-      {llm && (
-        <div className="border border-violet-100 dark:border-violet-800/50 bg-violet-50/60 dark:bg-violet-900/20 rounded-lg p-3 flex flex-col gap-1.5">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1.5 text-violet-700 dark:text-violet-400">
-              <Sparkles size={13} />
-              <span className="text-xs font-semibold tracking-wide uppercase">AI Analysis</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <ConfidenceDots confidence={llm.confidence} />
-              <LLMVerdictBadge verdict={llm.verdict} />
-            </div>
-          </div>
-          <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">{llm.reasoning}</p>
-          {llm.market_context && (
-            <p className="text-xs text-violet-600 dark:text-violet-400 italic">{llm.market_context}</p>
+      {/* Expanded indicator drawer */}
+      {expanded && hasIndicators && (
+        <div className="border-t border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/40 rounded-b-xl px-4 py-3 space-y-3">
+          {Object.entries(stratResults).map(([strat, res]) =>
+            res?.indicators ? (
+              <IndicatorTable key={strat} stratName={strat} stratResult={res} />
+            ) : null
           )}
         </div>
-      )}
-
-      {/* Notes */}
-      {notes && (
-        <p className="text-xs text-gray-500 dark:text-gray-400 italic border-t border-gray-50 dark:border-gray-700 pt-2">{notes}</p>
-      )}
-
-      {/* Refreshed at */}
-      {runAt && (
-        <p className="text-xs text-gray-400 dark:text-gray-500 text-right">↻ {runAt}</p>
       )}
     </div>
   );
