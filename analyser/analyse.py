@@ -112,7 +112,7 @@ def analyse_stock(stock_cfg):
     result["llm_verdict"] = llm_analyser.analyse(result)
     if result["llm_verdict"]:
         log.info(f"{ticker} LLM verdict: {result['llm_verdict']['verdict']} ({result['llm_verdict']['confidence']})")
-    time.sleep(13)  # gemini-2.5-flash free tier = 5 RPM → need ≥12s between calls
+    time.sleep(3)   # small pause between stocks; Pro tier handles higher RPM
 
     return result
 

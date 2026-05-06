@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 log = logging.getLogger("llm_analyser")
 
 MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
-MAX_RETRIES = 2
+MAX_RETRIES = 4
 
 
 def _build_prompt(stock_result: dict) -> str:
@@ -65,8 +65,8 @@ def _parse_response(text: str) -> dict:
     }
 
 
-def _retry_wait(err: str) -> int:
-    """Return seconds to wait before retrying, based on error type."""
+def _retry_wait(err: str, attempt: int) -> int:
+    """Exponential backoff, honouring any retry-delay the API suggests."""
     # New SDK JSON format: 'retryDelay': '11s'
     m = re.search(r"retryDelay['\"]:\s*['\"](\d+)s", err)
     if m:
@@ -75,8 +75,9 @@ def _retry_wait(err: str) -> int:
     m = re.search(r"retry_delay\s*\{\s*seconds:\s*(\d+)", err)
     if m:
         return int(m.group(1)) + 2
-    # Default backoffs
-    return 15 if "503" in err else 20
+    # Exponential backoff: 5s, 10s, 20s, 40s …
+    base = 5 if "503" in err else 8
+    return base * (2 ** (attempt - 1))
 
 
 def analyse(stock_result: dict) -> dict | None:
@@ -100,7 +101,7 @@ def analyse(stock_result: dict) -> dict | None:
                 err = str(e)
                 is_retryable = ("429" in err or "503" in err) and attempt < MAX_RETRIES
                 if is_retryable:
-                    wait = _retry_wait(err)
+                    wait = _retry_wait(err, attempt)
                     log.warning(f"{ticker}: {'503 overload' if '503' in err else 'rate limited'} — waiting {wait}s (attempt {attempt}/{MAX_RETRIES})")
                     time.sleep(wait)
                 else:
