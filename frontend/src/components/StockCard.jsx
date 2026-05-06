@@ -5,9 +5,9 @@ import StrategyBadge from "./StrategyBadge";
 const STRAT_LABELS = {
   rsi_ema:      "RSI + EMA",
   macd:         "MACD",
-  bollinger:    "Bollinger",
-  breakout:     "Breakout",
-  volume_surge: "Volume",
+  bollinger:    "Bollinger Bands",
+  breakout:     "52W Breakout",
+  volume_surge: "Volume Surge",
 };
 
 function OverallBadge({ signal }) {
@@ -49,44 +49,18 @@ function ConfidenceDots({ confidence }) {
   );
 }
 
-function IndicatorTable({ stratName, stratResult }) {
-  const indicators = stratResult?.indicators;
-  if (!indicators || Object.keys(indicators).length === 0) return null;
-  return (
-    <div className="mb-3 last:mb-0">
-      <div className="flex items-center gap-2 mb-1">
-        <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
-          {STRAT_LABELS[stratName] || stratName}
-        </span>
-        <StrategyBadge strategy={stratName} signal={stratResult.signal} size="xs" />
-      </div>
-      {stratResult.reason && (
-        <p className="text-xs text-gray-500 dark:text-gray-400 italic mb-1.5">{stratResult.reason}</p>
-      )}
-      <div className="grid grid-cols-2 gap-x-4 gap-y-0.5">
-        {Object.entries(indicators).map(([key, val]) => (
-          <div key={key} className="flex justify-between text-xs py-0.5 border-b border-gray-100 dark:border-gray-700/50">
-            <span className="text-gray-500 dark:text-gray-400">{key}</span>
-            <span className="font-medium text-gray-800 dark:text-gray-200 tabular-nums">{val}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 export default function StockCard({ result, stockConfig, onEdit, onDelete }) {
   const [expanded, setExpanded] = useState(false);
 
-  const name       = result?.display_name || stockConfig?.display_name || stockConfig?.ticker;
-  const ticker     = result?.ticker || stockConfig?.ticker;
-  const price      = result?.last_price;
-  const chg        = result?.day_change_pct;
-  const overall    = result?.overall_signal;
+  const name         = result?.display_name || stockConfig?.display_name || stockConfig?.ticker;
+  const ticker       = result?.ticker || stockConfig?.ticker;
+  const price        = result?.last_price;
+  const chg          = result?.day_change_pct;
+  const overall      = result?.overall_signal;
   const stratResults = result?.strategy_results || {};
-  const notes      = stockConfig?.notes || result?.notes;
-  const llm        = result?.llm_verdict;
-  const runAt      = result?.run_at
+  const notes        = stockConfig?.notes || result?.notes;
+  const llm          = result?.llm_verdict;
+  const runAt        = result?.run_at
     ? new Date(result.run_at).toLocaleString("en-IN", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit", hour12: true })
     : null;
 
@@ -95,13 +69,17 @@ export default function StockCard({ result, stockConfig, onEdit, onDelete }) {
   const t1  = result?.best_target_1;
   const t2  = result?.best_target_2;
 
-  const hasIndicators = Object.values(stratResults).some((r) => r?.indicators);
+  const hasDetail = Object.keys(stratResults).length > 0;
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col transition-colors">
-      {/* Main content — always visible */}
-      <div className="p-4 flex flex-col gap-3">
-        {/* Header */}
+
+      {/* Clickable main body */}
+      <div
+        className={`p-4 flex flex-col gap-3 ${hasDetail ? "cursor-pointer" : ""}`}
+        onClick={hasDetail ? () => setExpanded((e) => !e) : undefined}
+      >
+        {/* Header row */}
         <div className="flex items-start justify-between">
           <div>
             <div className="flex items-center gap-2">
@@ -119,7 +97,8 @@ export default function StockCard({ result, stockConfig, onEdit, onDelete }) {
               </div>
             )}
           </div>
-          <div className="flex gap-1">
+          {/* Action buttons — stop propagation so they don't toggle expand */}
+          <div className="flex gap-1" onClick={(e) => e.stopPropagation()}>
             {onEdit && (
               <button onClick={() => onEdit(stockConfig)} className="p-1 text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
                 <Pencil size={15} />
@@ -178,31 +157,49 @@ export default function StockCard({ result, stockConfig, onEdit, onDelete }) {
           <p className="text-xs text-gray-500 dark:text-gray-400 italic border-t border-gray-50 dark:border-gray-700 pt-2">{notes}</p>
         )}
 
-        {/* Footer row */}
-        <div className="flex items-center justify-between pt-1">
-          {runAt
-            ? <p className="text-xs text-gray-400 dark:text-gray-500">↻ {runAt}</p>
-            : <span />}
-          {hasIndicators && (
-            <button
-              onClick={() => setExpanded((e) => !e)}
-              className="flex items-center gap-1 text-xs text-blue-500 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium transition-colors"
-            >
-              {expanded ? "Hide details" : "Show indicators"}
+        {/* Footer */}
+        {hasDetail && (
+          <div className="flex items-center justify-between pt-0.5">
+            {runAt ? <p className="text-xs text-gray-400 dark:text-gray-500">↻ {runAt}</p> : <span />}
+            <span className="flex items-center gap-1 text-xs text-blue-500 dark:text-blue-400 font-medium">
+              {expanded ? "Hide details" : "Indicator details"}
               {expanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
-            </button>
-          )}
-        </div>
+            </span>
+          </div>
+        )}
       </div>
 
-      {/* Expanded indicator drawer */}
-      {expanded && hasIndicators && (
-        <div className="border-t border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/40 rounded-b-xl px-4 py-3 space-y-3">
-          {Object.entries(stratResults).map(([strat, res]) =>
-            res?.indicators ? (
-              <IndicatorTable key={strat} stratName={strat} stratResult={res} />
-            ) : null
-          )}
+      {/* Expanded detail drawer */}
+      {expanded && hasDetail && (
+        <div className="border-t border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/40 rounded-b-xl px-4 py-4 space-y-4">
+          {Object.entries(stratResults).map(([strat, res]) => (
+            <div key={strat}>
+              {/* Strategy heading */}
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wide">
+                  {STRAT_LABELS[strat] || strat}
+                </span>
+                <StrategyBadge strategy={strat} signal={res.signal} size="xs" />
+              </div>
+
+              {/* Reason */}
+              {res.reason && (
+                <p className="text-xs text-gray-500 dark:text-gray-400 italic mb-2">{res.reason}</p>
+              )}
+
+              {/* Indicator values grid */}
+              {res.indicators && Object.keys(res.indicators).length > 0 && (
+                <div className="grid grid-cols-2 gap-x-6 gap-y-1">
+                  {Object.entries(res.indicators).map(([key, val]) => (
+                    <div key={key} className="flex justify-between items-center py-0.5 border-b border-gray-100 dark:border-gray-700/60">
+                      <span className="text-xs text-gray-400 dark:text-gray-500">{key}</span>
+                      <span className="text-xs font-semibold text-gray-800 dark:text-gray-200 tabular-nums">{val}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       )}
     </div>
