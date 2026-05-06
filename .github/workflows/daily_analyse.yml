@@ -3,9 +3,8 @@ name: Daily Stock Analysis
 
 on:
   schedule:
-    - cron: '*/5 * * * *'       # TEST: every 5 min — remove after confirming cron works
-    - cron: '0 4 * * 1-5'    # 9:30 AM IST, Mon–Fri
-    - cron: '0 9 * * 1-5'    # 2:30 PM IST, Mon–Fri
+    - cron: '0 4 * * 1-5'    # 9:30 AM IST, Mon–Fri (backup — primary trigger is Render backend)
+    - cron: '0 9 * * 1-5'    # 2:30 PM IST, Mon–Fri (backup — primary trigger is Render backend)
   workflow_dispatch:           # Manual trigger from UI
 
 jobs:
