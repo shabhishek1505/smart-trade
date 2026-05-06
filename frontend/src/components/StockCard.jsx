@@ -57,6 +57,9 @@ export default function StockCard({ result, stockConfig, onEdit, onDelete }) {
   const stratResults = result?.strategy_results || {};
   const notes = stockConfig?.notes || result?.notes;
   const llm = result?.llm_verdict;
+  const runAt = result?.run_at
+    ? new Date(result.run_at).toLocaleString("en-IN", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit", hour12: true })
+    : null;
 
   const entryZone = result?.best_entry_zone;
   const sl = result?.best_stop_loss;
@@ -141,6 +144,11 @@ export default function StockCard({ result, stockConfig, onEdit, onDelete }) {
       {/* Notes */}
       {notes && (
         <p className="text-xs text-gray-500 italic border-t border-gray-50 pt-2">{notes}</p>
+      )}
+
+      {/* Refreshed at */}
+      {runAt && (
+        <p className="text-xs text-gray-400 text-right">↻ {runAt}</p>
       )}
     </div>
   );
