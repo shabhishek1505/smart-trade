@@ -1,61 +1,180 @@
 {
-  "last_run": "2026-05-11T13:16:57.954040+05:30",
+  "last_run": "2026-05-11T14:37:40.486568+05:30",
   "stocks": [
     {
       "ticker": "BEL.NS",
       "display_name": "BEL",
-      "last_price": 434.35,
-      "day_change_pct": -1.22,
+      "last_price": 433.5,
+      "day_change_pct": -1.41,
       "overall_signal": "\ud83d\udd34 AVOID",
       "strategy_results": {
         "rsi_ema": {
           "signal": "AVOID",
-          "reason": "Price below EMA50 (435.94)",
+          "reason": "Price below EMA50 (435.90)",
           "entry_zone": null,
           "stop_loss": null,
           "target_1": null,
           "target_2": null,
           "indicators": {
-            "RSI (14)": 46.7,
-            "EMA 20": 437.96,
-            "EMA 50": 435.94,
-            "Price vs EMA20": "-3.61",
-            "Price vs EMA50": "-1.59"
+            "RSI (14)": 46.0,
+            "EMA 20": 437.88,
+            "EMA 50": 435.9,
+            "Price vs EMA20": "-4.38",
+            "Price vs EMA50": "-2.40"
           }
         },
         "macd": {
           "signal": "AVOID",
-          "reason": "MACD death cross \u2014 line below signal (-0.2976 < 0.4857)",
+          "reason": "MACD death cross \u2014 line below signal (-0.3654 < 0.4721)",
           "entry_zone": null,
           "stop_loss": null,
           "target_1": null,
           "target_2": null,
           "indicators": {
-            "MACD Line": -0.2976,
-            "Signal Line": 0.4857,
-            "Histogram": -0.7833,
+            "MACD Line": -0.3654,
+            "Signal Line": 0.4721,
+            "Histogram": -0.8376,
             "Prev Histogram": -0.6762,
             "Crossover": "Death \u25bc"
           }
         },
         "breakout": {
           "signal": "WATCH",
-          "reason": "Price 8.3% below 52w high \u20b9473.45 \u2014 approaching breakout zone",
+          "reason": "Price 8.4% below 52w high \u20b9473.45 \u2014 approaching breakout zone",
           "entry_zone": null,
-          "stop_loss": 412.63,
+          "stop_loss": 411.82,
           "target_1": 487.65,
           "target_2": 511.33,
           "indicators": {
             "52W High": 473.45,
-            "% From High": "8.3%",
-            "Today Volume": "4.5M",
+            "% From High": "8.4%",
+            "Today Volume": "5.3M",
             "20D Avg Volume": "11.6M",
-            "Volume Ratio": "0.4x"
+            "Volume Ratio": "0.5x"
           }
         }
       },
       "notes": "Defence PSU \u2014 watch for \u20b9473 breakout",
-      "run_at": "2026-05-11T13:15:07.599521+05:30",
+      "run_at": "2026-05-11T14:31:00.202801+05:30",
+      "best_entry_zone": null,
+      "best_stop_loss": null,
+      "best_target_1": null,
+      "best_target_2": null,
+      "llm_verdict": null
+    },
+    {
+      "ticker": "CIPLA.NS",
+      "display_name": "Cipla",
+      "last_price": 1310.0,
+      "day_change_pct": -2.75,
+      "overall_signal": "\ud83d\udfe2 BUY SIGNAL",
+      "strategy_results": {
+        "rsi_ema": {
+          "signal": "BUY",
+          "reason": "RSI 53.2 in entry zone (40\u201355) and price above EMA50 (1300.65)",
+          "entry_zone": [
+            1300.65,
+            1310.0
+          ],
+          "stop_loss": 1248.63,
+          "target_1": 1414.8,
+          "target_2": 1506.5,
+          "indicators": {
+            "RSI (14)": 53.2,
+            "EMA 20": 1304.12,
+            "EMA 50": 1300.65,
+            "Price vs EMA20": "+5.88",
+            "Price vs EMA50": "+9.35"
+          }
+        },
+        "volume_surge": {
+          "signal": "NEUTRAL",
+          "reason": "Volume 0.6x avg \u2014 no surge",
+          "entry_zone": null,
+          "stop_loss": null,
+          "target_1": null,
+          "target_2": null,
+          "indicators": {
+            "Today Volume": "988K",
+            "20D Avg Volume": "1.7M",
+            "Volume Ratio": "0.6x",
+            "Day Change": "-2.75%"
+          }
+        }
+      },
+      "notes": "Pharma \u2014 FDA approval catalyst",
+      "run_at": "2026-05-11T14:31:48.562154+05:30",
+      "best_entry_zone": [
+        1300.65,
+        1310.0
+      ],
+      "best_stop_loss": 1248.63,
+      "best_target_1": 1414.8,
+      "best_target_2": 1506.5,
+      "llm_verdict": {
+        "verdict": "BULLISH",
+        "confidence": "MEDIUM",
+        "reasoning": "Cipla exhibits a strong technical setup with its RSI in the buy entry zone and price holding above EMA50, suggesting a potential accumulation opportunity despite today's dip. This technical strength is underpinned by fundamental tailwinds from potential FDA approval catalysts, crucial for its US generics growth strategy.",
+        "market_context": "The Indian pharmaceutical sector acts as a defensive play, benefiting from stable domestic demand and growth opportunities in regulated markets like the US.",
+        "generated_at": "2026-05-11T09:02:43.317088+00:00"
+      }
+    },
+    {
+      "ticker": "ETERNAL.NS",
+      "display_name": "Eternal (Zomato)",
+      "last_price": 246.82,
+      "day_change_pct": -3.73,
+      "overall_signal": "\ud83d\udd34 AVOID",
+      "strategy_results": {
+        "rsi_ema": {
+          "signal": "AVOID",
+          "reason": "Price below EMA50 (251.70)",
+          "entry_zone": null,
+          "stop_loss": null,
+          "target_1": null,
+          "target_2": null,
+          "indicators": {
+            "RSI (14)": 47.3,
+            "EMA 20": 250.85,
+            "EMA 50": 251.7,
+            "Price vs EMA20": "-4.03",
+            "Price vs EMA50": "-4.88"
+          }
+        },
+        "macd": {
+          "signal": "AVOID",
+          "reason": "MACD death cross \u2014 line below signal (2.3024 < 2.7774)",
+          "entry_zone": null,
+          "stop_loss": null,
+          "target_1": null,
+          "target_2": null,
+          "indicators": {
+            "MACD Line": 2.3024,
+            "Signal Line": 2.7774,
+            "Histogram": -0.475,
+            "Prev Histogram": 0.1543,
+            "Crossover": "Death \u25bc"
+          }
+        },
+        "bollinger": {
+          "signal": "WATCH",
+          "reason": "Bollinger squeeze \u2014 bandwidth 10.21 below avg 14.46 (breakout imminent)",
+          "entry_zone": null,
+          "stop_loss": 225.2,
+          "target_1": 266.57,
+          "target_2": 283.84,
+          "indicators": {
+            "Upper Band": 265.34,
+            "Middle Band": 252.46,
+            "Lower Band": 239.58,
+            "Bandwidth": 10.21,
+            "Avg Bandwidth (20)": 14.46,
+            "RSI (14)": 47.3
+          }
+        }
+      },
+      "notes": "Formerly Zomato \u2014 rebranded Mar 2025. Wait for RSI < 42 before entering",
+      "run_at": "2026-05-11T14:32:47.435162+05:30",
       "best_entry_zone": null,
       "best_stop_loss": null,
       "best_target_1": null,
@@ -63,506 +182,381 @@
       "llm_verdict": {
         "verdict": "BEARISH",
         "confidence": "MEDIUM",
-        "reasoning": "Immediate technical signals, including a MACD death cross and price below the EMA50, indicate short-term bearish momentum and suggest consolidation or further correction. While BEL benefits from strong fundamental tailwinds like robust order books and government focus on defence indigenisation, current technicals warrant caution despite long-term potential.",
-        "market_context": "The Indian defence sector is experiencing significant tailwinds from sustained government capital outlay, indigenisation drives, and increasing export opportunities for PSUs.",
-        "generated_at": "2026-05-11T07:45:17.045215+00:00"
-      }
-    },
-    {
-      "ticker": "CIPLA.NS",
-      "display_name": "Cipla",
-      "last_price": 1316.7,
-      "day_change_pct": -2.25,
-      "overall_signal": "\ud83d\udfe2 BUY SIGNAL",
-      "strategy_results": {
-        "rsi_ema": {
-          "signal": "BUY",
-          "reason": "RSI 55.0 in entry zone (40\u201355) and price above EMA50 (1300.92)",
-          "entry_zone": [
-            1300.92,
-            1316.7
-          ],
-          "stop_loss": 1248.88,
-          "target_1": 1422.04,
-          "target_2": 1514.2,
-          "indicators": {
-            "RSI (14)": 55.0,
-            "EMA 20": 1304.76,
-            "EMA 50": 1300.92,
-            "Price vs EMA20": "+11.94",
-            "Price vs EMA50": "+15.78"
-          }
-        },
-        "volume_surge": {
-          "signal": "NEUTRAL",
-          "reason": "Volume 0.4x avg \u2014 no surge",
-          "entry_zone": null,
-          "stop_loss": null,
-          "target_1": null,
-          "target_2": null,
-          "indicators": {
-            "Today Volume": "745K",
-            "20D Avg Volume": "1.7M",
-            "Volume Ratio": "0.4x",
-            "Day Change": "-2.25%"
-          }
-        }
-      },
-      "notes": "Pharma \u2014 FDA approval catalyst",
-      "run_at": "2026-05-11T13:15:21.209463+05:30",
-      "best_entry_zone": [
-        1300.92,
-        1316.7
-      ],
-      "best_stop_loss": 1248.88,
-      "best_target_1": 1422.04,
-      "best_target_2": 1514.2,
-      "llm_verdict": {
-        "verdict": "BULLISH",
-        "confidence": "HIGH",
-        "reasoning": "Cipla exhibits a strong technical setup, with its RSI in the buy entry zone and price maintaining above EMA50, signalling potential upward momentum. This technical strength is significantly complemented by the analyst's note on an impending FDA approval catalyst, which holds substantial fundamental value for the company's growth, despite today's lower volume.",
-        "market_context": "The Indian pharmaceutical sector continues to pursue global expansion, with US FDA approvals serving as critical milestones for market access and revenue diversification.",
-        "generated_at": "2026-05-11T07:45:26.450513+00:00"
-      }
-    },
-    {
-      "ticker": "ETERNAL.NS",
-      "display_name": "Eternal (Zomato)",
-      "last_price": 247.03,
-      "day_change_pct": -3.65,
-      "overall_signal": "\ud83d\udd34 AVOID",
-      "strategy_results": {
-        "rsi_ema": {
-          "signal": "AVOID",
-          "reason": "Price below EMA50 (251.71)",
-          "entry_zone": null,
-          "stop_loss": null,
-          "target_1": null,
-          "target_2": null,
-          "indicators": {
-            "RSI (14)": 47.4,
-            "EMA 20": 250.87,
-            "EMA 50": 251.71,
-            "Price vs EMA20": "-3.84",
-            "Price vs EMA50": "-4.68"
-          }
-        },
-        "macd": {
-          "signal": "AVOID",
-          "reason": "MACD death cross \u2014 line below signal (2.3191 < 2.7807)",
-          "entry_zone": null,
-          "stop_loss": null,
-          "target_1": null,
-          "target_2": null,
-          "indicators": {
-            "MACD Line": 2.3191,
-            "Signal Line": 2.7807,
-            "Histogram": -0.4616,
-            "Prev Histogram": 0.1543,
-            "Crossover": "Death \u25bc"
-          }
-        },
-        "bollinger": {
-          "signal": "WATCH",
-          "reason": "Bollinger squeeze \u2014 bandwidth 10.19 below avg 14.46 (breakout imminent)",
-          "entry_zone": null,
-          "stop_loss": 225.23,
-          "target_1": 266.79,
-          "target_2": 284.08,
-          "indicators": {
-            "Upper Band": 265.33,
-            "Middle Band": 252.47,
-            "Lower Band": 239.6,
-            "Bandwidth": 10.19,
-            "Avg Bandwidth (20)": 14.46,
-            "RSI (14)": 47.4
-          }
-        }
-      },
-      "notes": "Formerly Zomato \u2014 rebranded Mar 2025. Wait for RSI < 42 before entering",
-      "run_at": "2026-05-11T13:15:30.568696+05:30",
-      "best_entry_zone": null,
-      "best_stop_loss": null,
-      "best_target_1": null,
-      "best_target_2": null,
-      "llm_verdict": {
-        "verdict": "NEUTRAL",
-        "confidence": "MEDIUM",
-        "reasoning": "While technical indicators (MACD death cross, price below EMA50) signal bearish momentum and advise caution, Zomato (rebranding to Eternal) holds strong long-term fundamentals as a market leader in food delivery and quick commerce. An imminent Bollinger squeeze breakout suggests high volatility, and the analyst's recommendation to wait for RSI < 42 implies current levels are not ideal for entry, p",
-        "market_context": "The Indian e-commerce and digital services sector continues robust growth, driven by increasing internet penetration and consumer spending.",
-        "generated_at": "2026-05-11T07:45:45.524784+00:00"
+        "reasoning": "Strong bearish technicals, including a MACD death cross and price below EMA50, signal immediate downside risk. While Eternal (Zomato) has strong long-term fundamentals in India's digital consumption growth, current price action dictates an 'AVOID' posture, reinforced by the analyst's wait for RSI < 42 before entry.",
+        "market_context": "The Indian digital consumption and quick commerce sector continues to expand, driven by increasing smartphone penetration and urbanization.",
+        "generated_at": "2026-05-11T09:02:55.800061+00:00"
       }
     },
     {
       "ticker": "ULTRACEMCO.NS",
       "display_name": "UltraTech Cement",
-      "last_price": 11893.0,
-      "day_change_pct": -0.48,
+      "last_price": 11905.0,
+      "day_change_pct": -0.38,
       "overall_signal": "\ud83d\udfe2 BUY SIGNAL",
       "strategy_results": {
         "rsi_ema": {
           "signal": "BUY",
-          "reason": "RSI 52.8 in entry zone (40\u201355) and price above EMA50 (11790.91)",
+          "reason": "RSI 53.1 in entry zone (40\u201355) and price above EMA50 (11791.38)",
           "entry_zone": [
-            11790.91,
-            11893.0
+            11791.38,
+            11905.0
           ],
-          "stop_loss": 11201.36,
-          "target_1": 12844.44,
-          "target_2": 13676.95,
+          "stop_loss": 11201.81,
+          "target_1": 12857.4,
+          "target_2": 13690.75,
           "indicators": {
-            "RSI (14)": 52.8,
-            "EMA 20": 11825.66,
-            "EMA 50": 11790.91,
-            "Price vs EMA20": "+67.34",
-            "Price vs EMA50": "+102.09"
+            "RSI (14)": 53.1,
+            "EMA 20": 11826.8,
+            "EMA 50": 11791.38,
+            "Price vs EMA20": "+78.20",
+            "Price vs EMA50": "+113.62"
           }
         },
         "macd": {
           "signal": "WATCH",
-          "reason": "MACD above signal but histogram shrinking (6.4377) \u2014 momentum fading",
+          "reason": "MACD above signal but histogram shrinking (7.2035) \u2014 momentum fading",
           "entry_zone": null,
-          "stop_loss": 11298.35,
-          "target_1": 12844.44,
+          "stop_loss": 11309.75,
+          "target_1": 12857.4,
           "target_2": null,
           "indicators": {
-            "MACD Line": 104.1919,
-            "Signal Line": 97.7542,
-            "Histogram": 6.4377,
+            "MACD Line": 105.1492,
+            "Signal Line": 97.9457,
+            "Histogram": 7.2035,
             "Prev Histogram": 16.7587,
             "Crossover": "Golden \u25b2"
           }
         },
         "breakout": {
           "signal": "WATCH",
-          "reason": "Price 9.3% below 52w high \u20b913110.00 \u2014 approaching breakout zone",
+          "reason": "Price 9.2% below 52w high \u20b913110.00 \u2014 approaching breakout zone",
           "entry_zone": null,
-          "stop_loss": 11298.35,
+          "stop_loss": 11309.75,
           "target_1": 13503.3,
           "target_2": 14158.8,
           "indicators": {
             "52W High": 13110.0,
-            "% From High": "9.3%",
-            "Today Volume": "98K",
-            "20D Avg Volume": "321K",
-            "Volume Ratio": "0.3x"
+            "% From High": "9.2%",
+            "Today Volume": "130K",
+            "20D Avg Volume": "323K",
+            "Volume Ratio": "0.4x"
           }
         },
         "bollinger": {
           "signal": "WATCH",
           "reason": "Bollinger squeeze \u2014 bandwidth 6.33 below avg 13.81 (breakout imminent)",
           "entry_zone": null,
-          "stop_loss": 10944.89,
-          "target_1": 12844.44,
-          "target_2": 13676.95,
+          "stop_loss": 10945.45,
+          "target_1": 12857.4,
+          "target_2": 13690.75,
           "indicators": {
-            "Upper Band": 12273.87,
-            "Middle Band": 11897.4,
-            "Lower Band": 11520.93,
+            "Upper Band": 12274.47,
+            "Middle Band": 11898.0,
+            "Lower Band": 11521.53,
             "Bandwidth": 6.33,
             "Avg Bandwidth (20)": 13.81,
-            "RSI (14)": 52.8
+            "RSI (14)": 53.1
           }
         }
       },
       "notes": "BUY signal detected \u2014 cement sector momentum",
-      "run_at": "2026-05-11T13:15:49.694437+05:30",
+      "run_at": "2026-05-11T14:32:59.955407+05:30",
       "best_entry_zone": [
-        11790.91,
-        11893.0
+        11791.38,
+        11905.0
       ],
-      "best_stop_loss": 11201.36,
-      "best_target_1": 12844.44,
-      "best_target_2": 13676.95,
+      "best_stop_loss": 11201.81,
+      "best_target_1": 12857.4,
+      "best_target_2": 13690.75,
       "llm_verdict": {
         "verdict": "BULLISH",
         "confidence": "HIGH",
-        "reasoning": "UltraTech Cement exhibits a strong technical BUY signal, with RSI in an optimal entry zone and price firmly above EMA50, further supported by a Bollinger squeeze indicating an imminent upward price movement. This technical strength is underpinned by robust fundamental demand within the cement sector, driven by India's accelerated infrastructure development and a recovering real estate market.",
-        "market_context": "India's continued economic expansion and significant government investment in infrastructure projects are creating strong demand tailwinds for the cement industry.",
-        "generated_at": "2026-05-11T07:45:58.880927+00:00"
+        "reasoning": "UltraTech Cement presents a strong BUY signal with RSI in the entry zone and price above its EMA50, indicating positive momentum. Despite a slight fading in MACD histogram, the imminent Bollinger squeeze and proximity to its 52-week high suggest an impending upward breakout, bolstered by robust sector fundamentals.",
+        "market_context": "The Indian cement sector is experiencing strong tailwinds from continued government infrastructure spending and resilient housing demand, favoring market leaders like UltraTech.",
+        "generated_at": "2026-05-11T09:03:14.941995+00:00"
       }
     },
     {
       "ticker": "TITAN.NS",
       "display_name": "Titan",
-      "last_price": 4231.9,
-      "day_change_pct": -6.15,
+      "last_price": 4239.5,
+      "day_change_pct": -5.98,
       "overall_signal": "\ud83d\udd34 AVOID",
       "strategy_results": {
         "rsi_ema": {
           "signal": "AVOID",
-          "reason": "Price below EMA50 (4294.12)",
+          "reason": "Price below EMA50 (4294.42)",
           "entry_zone": null,
           "stop_loss": null,
           "target_1": null,
           "target_2": null,
           "indicators": {
-            "RSI (14)": 43.4,
-            "EMA 20": 4368.77,
-            "EMA 50": 4294.12,
-            "Price vs EMA20": "-136.87",
-            "Price vs EMA50": "-62.22"
+            "RSI (14)": 43.7,
+            "EMA 20": 4369.5,
+            "EMA 50": 4294.42,
+            "Price vs EMA20": "-130.00",
+            "Price vs EMA50": "-54.92"
           }
         },
         "macd": {
           "signal": "AVOID",
-          "reason": "MACD death cross \u2014 line below signal (19.1256 < 42.5323)",
+          "reason": "MACD death cross \u2014 line below signal (19.7319 < 42.6536)",
           "entry_zone": null,
           "stop_loss": null,
           "target_1": null,
           "target_2": null,
           "indicators": {
-            "MACD Line": 19.1256,
-            "Signal Line": 42.5323,
-            "Histogram": -23.4067,
+            "MACD Line": 19.7319,
+            "Signal Line": 42.6536,
+            "Histogram": -22.9217,
             "Prev Histogram": -13.2169,
             "Crossover": "Death \u25bc"
           }
         },
         "bollinger": {
           "signal": "WATCH",
-          "reason": "Bollinger squeeze \u2014 bandwidth 6.60 below avg 14.70 (breakout imminent)",
+          "reason": "Bollinger squeeze \u2014 bandwidth 6.51 below avg 14.70 (breakout imminent)",
           "entry_zone": null,
-          "stop_loss": 4063.9,
-          "target_1": 4570.45,
-          "target_2": 4866.68,
+          "stop_loss": 4066.14,
+          "target_1": 4578.66,
+          "target_2": 4875.42,
           "indicators": {
-            "Upper Band": 4569.83,
-            "Middle Band": 4423.81,
-            "Lower Band": 4277.79,
-            "Bandwidth": 6.6,
+            "Upper Band": 4568.23,
+            "Middle Band": 4424.19,
+            "Lower Band": 4280.15,
+            "Bandwidth": 6.51,
             "Avg Bandwidth (20)": 14.7,
-            "RSI (14)": 43.4
+            "RSI (14)": 43.7
           }
         },
         "volume_surge": {
           "signal": "ALERT",
-          "reason": "Volume surge 3.6x avg \u2014 \ud83d\udcc9 6.1% \u2014 institutional activity detected",
+          "reason": "Volume surge 4.3x avg \u2014 \ud83d\udcc9 6.0% \u2014 institutional activity detected",
           "entry_zone": null,
           "stop_loss": null,
           "target_1": null,
           "target_2": null,
           "indicators": {
-            "Today Volume": "4.2M",
+            "Today Volume": "5.0M",
             "20D Avg Volume": "1.2M",
-            "Volume Ratio": "3.6x",
-            "Day Change": "-6.15%"
+            "Volume Ratio": "4.3x",
+            "Day Change": "-5.98%"
           }
         }
       },
       "notes": "BUY signal detected \u2014 jewellery + watches consumer play",
-      "run_at": "2026-05-11T13:16:03.047534+05:30",
+      "run_at": "2026-05-11T14:33:19.107683+05:30",
       "best_entry_zone": null,
       "best_stop_loss": null,
       "best_target_1": null,
       "best_target_2": null,
       "llm_verdict": {
-        "verdict": "NEUTRAL",
+        "verdict": "BEARISH",
         "confidence": "MEDIUM",
-        "reasoning": "Despite strong short-term bearish technicals, including a MACD death cross, price below EMA50, and today's sharp 6.15% decline on high volume, the analyst note indicates a fundamental BUY signal for Titan, a robust consumer play in jewellery and watches. A Bollinger squeeze suggests imminent volatility, which could offer an entry point for long-term investors given its underlying business strength",
-        "market_context": "Indian consumer discretionary spending remains robust, supporting long-term prospects for quality brands like Titan, despite recent market volatility.",
-        "generated_at": "2026-05-11T07:46:15.592298+00:00"
+        "reasoning": "Despite Titan's strong fundamental appeal as a leading jewellery and watches consumer play, current technical signals are overwhelmingly bearish, with a MACD death cross, price below EMA50, and a significant 6% fall on high institutional volume, indicating immediate downside pressure and an imminent downward breakout.",
+        "market_context": "The Indian consumer discretionary sector remains a strong long-term growth story, but premium stocks like Titan are currently susceptible to profit booking and shifting market sentiment.",
+        "generated_at": "2026-05-11T09:06:20.086330+00:00"
       }
     },
     {
       "ticker": "RELIANCE.NS",
       "display_name": "RELIANCE",
-      "last_price": 1401.2,
-      "day_change_pct": -2.37,
+      "last_price": 1399.7,
+      "day_change_pct": -2.47,
       "overall_signal": "\ud83d\udfe2 BUY SIGNAL",
       "strategy_results": {
         "rsi_ema": {
           "signal": "BUY",
-          "reason": "RSI 50.7 in entry zone (40\u201355) and price above EMA50 (1398.29)",
+          "reason": "RSI 50.4 in entry zone (40\u201355) and price above EMA50 (1398.23)",
           "entry_zone": [
-            1398.29,
-            1401.2
+            1398.23,
+            1399.7
           ],
-          "stop_loss": 1328.37,
-          "target_1": 1513.3,
-          "target_2": 1611.38,
+          "stop_loss": 1328.32,
+          "target_1": 1511.68,
+          "target_2": 1609.65,
           "indicators": {
-            "RSI (14)": 50.7,
-            "EMA 20": 1403.64,
-            "EMA 50": 1398.29,
-            "Price vs EMA20": "-2.44",
-            "Price vs EMA50": "+2.91"
+            "RSI (14)": 50.4,
+            "EMA 20": 1403.5,
+            "EMA 50": 1398.23,
+            "Price vs EMA20": "-3.80",
+            "Price vs EMA50": "+1.47"
           }
         }
       },
       "notes": "",
-      "run_at": "2026-05-11T13:16:19.795497+05:30",
+      "run_at": "2026-05-11T14:36:24.274446+05:30",
       "best_entry_zone": [
-        1398.29,
-        1401.2
+        1398.23,
+        1399.7
       ],
-      "best_stop_loss": 1328.37,
-      "best_target_1": 1513.3,
-      "best_target_2": 1611.38,
+      "best_stop_loss": 1328.32,
+      "best_target_1": 1511.68,
+      "best_target_2": 1609.65,
       "llm_verdict": {
         "verdict": "BULLISH",
         "confidence": "HIGH",
-        "reasoning": "The technical signals indicate a strong BUY with RSI at 50.7 in the optimal entry zone and the price crossing above its EMA50, suggesting potential upward momentum. Fundamentally, Reliance is well-positioned with robust growth across its telecom (Jio) and retail segments, alongside significant long-term investments in new energy. This confluence of positive technicals and strong fundamental driver",
-        "market_context": "India's robust domestic consumption, accelerating digital adoption, and aggressive push towards green energy provide strong tailwinds for Reliance's diversified business segments.",
-        "generated_at": "2026-05-11T07:46:26.437699+00:00"
+        "reasoning": "The technical BUY signal is affirmed by RSI in the entry zone and the price holding just above EMA50, suggesting strong support and potential for a rebound following today's correction. Fundamentally, Reliance's diversified growth engines across Retail, Jio, and New Energy, coupled with its market leadership, provide robust long-term value.",
+        "market_context": "India's resilient economic growth, rising consumer spending, accelerating digital penetration, and the ambitious green energy transition offer significant tailwinds for Reliance's diverse business seg",
+        "generated_at": "2026-05-11T09:07:10.519037+00:00"
       }
     },
     {
       "ticker": "HINDCOPPER.NS",
       "display_name": "HINDCOPPER",
-      "last_price": 570.4,
-      "day_change_pct": 0.21,
+      "last_price": 574.4,
+      "day_change_pct": 0.91,
       "overall_signal": "\ud83d\udfe1 WATCH",
       "strategy_results": {
         "rsi_ema": {
           "signal": "WATCH",
-          "reason": "RSI 60.4 elevated, price above EMA20 (547.28) \u2014 wait for pullback",
+          "reason": "RSI 61.5 elevated, price above EMA20 (547.66) \u2014 wait for pullback",
           "entry_zone": [
-            547.28,
-            570.4
+            547.66,
+            574.4
           ],
-          "stop_loss": 509.75,
-          "target_1": 616.03,
-          "target_2": 655.96,
+          "stop_loss": 509.9,
+          "target_1": 620.35,
+          "target_2": 660.56,
           "indicators": {
-            "RSI (14)": 60.4,
-            "EMA 20": 547.28,
-            "EMA 50": 536.58,
-            "Price vs EMA20": "+23.12",
-            "Price vs EMA50": "+33.82"
+            "RSI (14)": 61.5,
+            "EMA 20": 547.66,
+            "EMA 50": 536.73,
+            "Price vs EMA20": "+26.74",
+            "Price vs EMA50": "+37.67"
           }
         },
         "breakout": {
           "signal": "AVOID",
-          "reason": "Price 24.8% below 52w high \u20b9758.83 \u2014 far from breakout",
+          "reason": "Price 24.3% below 52w high \u20b9758.83 \u2014 far from breakout",
           "entry_zone": null,
           "stop_loss": null,
           "target_1": null,
           "target_2": null,
           "indicators": {
             "52W High": 758.83,
-            "% From High": "24.8%",
-            "Today Volume": "4.1M",
+            "% From High": "24.3%",
+            "Today Volume": "4.8M",
             "20D Avg Volume": "5.1M",
-            "Volume Ratio": "0.8x"
+            "Volume Ratio": "0.9x"
           }
         },
         "macd": {
           "signal": "NEUTRAL",
-          "reason": "MACD 8.9888 \u2014 no crossover signal",
+          "reason": "MACD 9.3079 \u2014 no crossover signal",
           "entry_zone": null,
           "stop_loss": null,
           "target_1": null,
           "target_2": null,
           "indicators": {
-            "MACD Line": 8.9888,
-            "Signal Line": 7.125,
-            "Histogram": 1.8637,
+            "MACD Line": 9.3079,
+            "Signal Line": 7.1888,
+            "Histogram": 2.119,
             "Prev Histogram": 1.302,
             "Crossover": "Golden \u25b2"
           }
         },
         "bollinger": {
           "signal": "WATCH",
-          "reason": "Bollinger squeeze \u2014 bandwidth 9.51 below avg 19.57 (breakout imminent)",
+          "reason": "Bollinger squeeze \u2014 bandwidth 9.73 below avg 19.58 (breakout imminent)",
           "entry_zone": null,
-          "stop_loss": 499.2,
-          "target_1": 616.03,
-          "target_2": 655.96,
+          "stop_loss": 498.8,
+          "target_1": 620.35,
+          "target_2": 660.56,
           "indicators": {
-            "Upper Band": 577.93,
-            "Middle Band": 551.7,
-            "Lower Band": 525.48,
-            "Bandwidth": 9.51,
-            "Avg Bandwidth (20)": 19.57,
-            "RSI (14)": 60.4
+            "Upper Band": 578.75,
+            "Middle Band": 551.9,
+            "Lower Band": 525.06,
+            "Bandwidth": 9.73,
+            "Avg Bandwidth (20)": 19.58,
+            "RSI (14)": 61.5
           }
         }
       },
       "notes": "",
-      "run_at": "2026-05-11T13:16:30.572985+05:30",
+      "run_at": "2026-05-11T14:37:14.659933+05:30",
       "best_entry_zone": null,
       "best_stop_loss": null,
       "best_target_1": null,
       "best_target_2": null,
       "llm_verdict": {
-        "verdict": "NEUTRAL",
-        "confidence": "MEDIUM",
-        "reasoning": "Hindustan Copper is currently in a Bollinger squeeze, signalling an imminent sharp price movement following a period of elevated RSI and price above EMA20. While technicals advise waiting for a pullback and are far from an immediate 52-week high breakout, the robust fundamental tailwinds for copper from global energy transition and India's infrastructure push provide a strong upward bias for the a",
-        "market_context": "The global copper market is experiencing strong demand driven by electrification and renewable energy projects, coupled with persistent supply concerns, significantly benefiting key producers like HIN",
-        "generated_at": "2026-05-11T07:46:42.060045+00:00"
+        "verdict": "BULLISH",
+        "confidence": "HIGH",
+        "reasoning": "HINDCOPPER benefits from robust long-term demand for copper driven by global electrification, renewable energy, and persistent supply deficits. Technically, a Bollinger Band squeeze signals an imminent significant price move, which, combined with the price trading above its EMA20, indicates a strong potential for an upward breakout despite elevated RSI suggesting potential for short-term consolida",
+        "market_context": "Global copper demand is projected to grow significantly due to the energy transition, EV adoption, and infrastructure build-out, against a backdrop of tight supply and rising ore grades.",
+        "generated_at": "2026-05-11T09:07:25.482639+00:00"
       }
     },
     {
       "ticker": "AVALON.NS",
       "display_name": "Avalon",
-      "last_price": 1364.2,
-      "day_change_pct": -1.64,
+      "last_price": 1355.0,
+      "day_change_pct": -2.31,
       "overall_signal": "\ud83d\udd34 AVOID",
       "strategy_results": {
         "rsi_ema": {
           "signal": "AVOID",
-          "reason": "RSI 75.6 overbought",
+          "reason": "RSI 74.3 overbought",
           "entry_zone": null,
           "stop_loss": null,
           "target_1": null,
           "target_2": null,
           "indicators": {
-            "RSI (14)": 75.6,
-            "EMA 20": 1141.15,
-            "EMA 50": 1058.58,
-            "Price vs EMA20": "+223.05",
-            "Price vs EMA50": "+305.62"
+            "RSI (14)": 74.3,
+            "EMA 20": 1140.27,
+            "EMA 50": 1058.22,
+            "Price vs EMA20": "+214.73",
+            "Price vs EMA50": "+296.78"
           }
         },
         "macd": {
           "signal": "NEUTRAL",
-          "reason": "MACD 76.2675 \u2014 no crossover signal",
+          "reason": "MACD 75.5336 \u2014 no crossover signal",
           "entry_zone": null,
           "stop_loss": null,
           "target_1": null,
           "target_2": null,
           "indicators": {
-            "MACD Line": 76.2675,
-            "Signal Line": 47.3905,
-            "Histogram": 28.877,
+            "MACD Line": 75.5336,
+            "Signal Line": 47.2437,
+            "Histogram": 28.2898,
             "Prev Histogram": 24.6754,
             "Crossover": "Golden \u25b2"
           }
         },
         "bollinger": {
           "signal": "AVOID",
-          "reason": "Price at upper BB \u20b91320.00 with RSI 75.6 \u2014 overbought",
+          "reason": "Price at upper BB \u20b91317.32 with RSI 74.3 \u2014 overbought",
           "entry_zone": null,
           "stop_loss": null,
           "target_1": null,
           "target_2": null,
           "indicators": {
-            "Upper Band": 1320.0,
-            "Middle Band": 1123.14,
-            "Lower Band": 926.28,
-            "Bandwidth": 35.06,
-            "Avg Bandwidth (20)": 23.36,
-            "RSI (14)": 75.6
+            "Upper Band": 1317.32,
+            "Middle Band": 1122.68,
+            "Lower Band": 928.04,
+            "Bandwidth": 34.67,
+            "Avg Bandwidth (20)": 23.34,
+            "RSI (14)": 74.3
           }
         },
         "volume_surge": {
           "signal": "NEUTRAL",
-          "reason": "Volume 0.4x avg \u2014 no surge",
+          "reason": "Volume 0.5x avg \u2014 no surge",
           "entry_zone": null,
           "stop_loss": null,
           "target_1": null,
           "target_2": null,
           "indicators": {
-            "Today Volume": "261K",
+            "Today Volume": "315K",
             "20D Avg Volume": "583K",
-            "Volume Ratio": "0.4x",
-            "Day Change": "-1.64%"
+            "Volume Ratio": "0.5x",
+            "Day Change": "-2.31%"
           }
         }
       },
       "notes": "",
-      "run_at": "2026-05-11T13:16:46.176818+05:30",
+      "run_at": "2026-05-11T14:37:29.638903+05:30",
       "best_entry_zone": null,
       "best_stop_loss": null,
       "best_target_1": null,
@@ -570,9 +564,9 @@
       "llm_verdict": {
         "verdict": "NEUTRAL",
         "confidence": "MEDIUM",
-        "reasoning": "Avalon is technically overbought, with a high RSI and price at the upper Bollinger Band, suggesting a short-term correction or consolidation is likely. While the EMS sector benefits from strong government support and domestic demand, current technicals indicate caution, advising against immediate entry despite positive long-term sector trends.",
-        "market_context": "The Indian EMS sector is experiencing robust growth driven by government support and increasing domestic electronics consumption.",
-        "generated_at": "2026-05-11T07:46:53.952775+00:00"
+        "reasoning": "While Avalon benefits from robust long-term tailwinds in India's EMS sector driven by 'Make in India' initiatives, current technicals indicate the stock is overbought. Both RSI (74.3) and price at the upper Bollinger Band suggest a short-term consolidation or pullback is likely, making it an unfavourable entry point despite strong underlying business prospects.",
+        "market_context": "The Indian EMS sector continues to benefit from government PLI schemes and increasing domestic and export demand for electronics.",
+        "generated_at": "2026-05-11T09:07:36.485317+00:00"
       }
     }
   ]
